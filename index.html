@@ -5,248 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry Marketplace</title>
     <style>
-        body {
-            background-color: #000000 !important;
-            color: #f3f4f6 !important;
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            padding: 16px;
-            border-bottom: 1px solid #1f2937;
-            text-align: center;
-            background-color: #000000;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-        }
-        header img {
-            height: 40px;
-            width: auto;
-        }
-        main {
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 90px;
-        }
-        
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-
-        /* Сетка каталога */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .card {
-            border: 1px solid rgba(251, 191, 36, 0.4);
-            background-color: #0d0d0d;
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .img-placeholder {
-            width: 100%;
-            height: 110px;
-            background-color: #141414;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #4b5563;
-            border: 1px solid #111827;
-        }
-        .title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e5e7eb;
-            margin: 0 0 12px 0;
-        }
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #111827;
-            padding-top: 8px;
-        }
-        .price {
-            font-size: 16px;
-            font-weight: bold;
-            color: #fbbf24;
-        }
-        button.buy-btn {
-            background-color: #fbbf24;
-            color: #000000;
-            border: none;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .page-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #fbbf24;
-            margin-bottom: 15px;
-        }
-        .account-box, .cart-box {
-            background-color: #0d0d0d;
-            border: 1px solid #1f2937;
-            padding: 20px;
-            border-radius: 16px;
-            color: #9ca3af;
-        }
-
-        /* Элементы корзины */
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #1f2937;
-        }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .cart-item-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .cart-item-title {
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .cart-item-price {
-            color: #fbbf24;
-            font-size: 13px;
-        }
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .qty-btn {
-            background-color: #1f2937;
-            color: #fff;
-            border: 1px solid #374151;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .qty-btn:hover {
-            background-color: #374151;
-        }
-        .cart-total {
-            margin-top: 20px;
-            text-align: right;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-        }
-        .cart-total span {
-            color: #fbbf24;
-        }
-
-        /* Нижнее меню навигации */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 65px;
-            background-color: #070707;
-            border-top: 1px solid #1f2937;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #9ca3af;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 500;
-            gap: 4px;
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            width: 25%;
-            height: 100%;
-            justify-content: center;
-        }
-        .nav-item.active {
-            color: #fbbf24;
-        }
-        .nav-icon {
-            width: 10px;
-            height: 10px;
-            border-radius: 50px;
-            background-color: #374151;
-            transition: background-color 0.2s;
-        }
-        .nav-item.active .nav-icon {
-            background-color: #fbbf24;
-        }
+        body { background-color: #000000 !important; color: #f3f4f6 !important; font-family: sans-serif; margin: 0; padding: 0; }
+        header { padding: 16px; border-bottom: 1px solid #1f2937; text-align: center; background-color: #000000; position: sticky; top: 0; z-index: 90; }
+        header img { height: 40px; width: auto; }
+        main { padding: 15px; max-width: 600px; margin: 0 auto; padding-bottom: 90px; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card { border: 1px solid rgba(251, 191, 36, 0.4); background-color: #0d0d0d; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+        .img-placeholder { width: 100%; height: 110px; background-color: #141414; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #4b5563; border: 1px solid #111827; }
+        .title { font-size: 14px; font-weight: 600; color: #e5e7eb; margin: 0 0 12px 0; }
+        .footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #111827; padding-top: 8px; }
+        .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
+        button.buy-btn { background-color: #fbbf24; color: #000000; border: none; font-size: 12px; font-weight: bold; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+        .page-title { font-size: 20px; font-weight: bold; color: #fbbf24; margin-bottom: 15px; }
+        .account-box, .cart-box { background-color: #0d0d0d; border: 1px solid #1f2937; padding: 20px; border-radius: 16px; color: #9ca3af; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1f2937; }
+        .cart-item-info { display: flex; flex-direction: column; gap: 2px; }
+        .cart-item-title { color: #fff; font-size: 14px; font-weight: bold; }
+        .cart-item-price { color: #fbbf24; font-size: 13px; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { background-color: #1f2937; color: #fff; border: 1px solid #374151; width: 28px; height: 28px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .cart-total { margin-top: 20px; text-align: right; font-size: 16px; font-weight: bold; color: #fff; }
+        .cart-total span { color: #fbbf24; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background-color: #070707; border-top: 1px solid #1f2937; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #9ca3af; text-decoration: none; font-size: 11px; font-weight: 500; gap: 4px; background: none; border: none; padding: 0; cursor: pointer; width: 25%; height: 100%; justify-content: center; }
+        .nav-item.active { color: #fbbf24; }
+        .nav-icon { width: 10px; height: 10px; border-radius: 50px; background-color: #374151; }
+        .nav-item.active .nav-icon { background-color: #fbbf24; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#">
-            <img src="https://githubusercontent.com" alt="Verry">
-        </a>
+        <a href="#"><img src="https://githubusercontent.com" alt="Verry"></a>
     </header>
 
     <main>
-        <!-- СТРАНИЦА: Главная -->
         <div id="home" class="page">
             <div class="page-title">Главная</div>
-            <div class="account-box">
-                Приветствуем в Verry! Здесь будут баннеры, новости и самые популярные категории торговой площадки.
-            </div>
+            <div class="account-box">Приветствуем в Verry! Здесь будут баннеры, новости и самые популярные категории торговой площадки.</div>
         </div>
 
-        <!-- СТРАНИЦА: Каталог -->
         <div id="catalog" class="page active">
             <div class="page-title">Каталог товаров</div>
-            <div id="products-grid" class="grid">
-                <!-- Карточки сгенерируются скриптом автоматически -->
-            </div>
+            <div id="products-grid" class="grid"></div>
         </div>
 
-        <!-- СТРАНИЦА: Корзина -->
         <div id="cart" class="page">
             <div class="page-title">Ваша корзина</div>
-            <div id="cart-container" class="cart-box">
-                <!-- Содержимое корзины сгенерируется скриптом автоматически -->
-            </div>
+            <div id="cart-container" class="cart-box"></div>
         </div>
 
-        <!-- СТРАНИЦА: Аккаунт -->
         <div id="account" class="page">
             <div class="page-title">Личный кабинет</div>
             <div class="account-box">
@@ -258,64 +68,93 @@
     </main>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="switchPage('home', this)">
-            <div class="nav-icon"></div>
-            <span>Главная</span>
-        </button>
-        <button class="nav-item active" onclick="switchPage('catalog', this)">
-            <div class="nav-icon"></div>
-            <span>Каталог</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('cart', this)">
-            <div class="nav-icon"></div>
-            <span>Корзина</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('account', this)">
-            <div class="nav-icon"></div>
-            <span>Аккаунт</span>
-        </button>
+        <button class="nav-item" onclick="switchPage('home', this)"><div class="nav-icon"></div><span>Главная</span></button>
+        <button class="nav-item active" onclick="switchPage('catalog', this)"><div class="nav-icon"></div><span>Каталог</span></button>
+        <button class="nav-item" onclick="switchPage('cart', this)"><div class="nav-icon"></div><span>Корзина</span></button>
+        <button class="nav-item" onclick="switchPage('account', this)"><div class="nav-icon"></div><span>Аккаунт</span></button>
     </div>
 
     <script>
-        // Глобальный массив с корзиной (хранится в памяти браузера)
         let cart = [];
-
-        // База данных возможных названий и цен для создания 12 случайных карточек
         const itemNames = ["Игровой статус", "Кастомный пак", "Донат-кейс", "Привилегия VIP", "Набор ресурсов", "Пропуск сезона", "Секретный ключ", "Ускоритель опыта", "Золотые монеты", "Эксклюзивный скин", "Промо-код", "Доступ к серверу"];
         const products = [];
 
-        // Генерируем ровно 12 случайных товаров
         for (let i = 1; i <= 12; i++) {
             const randomName = itemNames[(i - 1) % itemNames.length] + " #" + i;
-            const randomPrice = Math.floor(Math.random() * (3000 - 100) + 100); // Цена от 100 до 3000 руб
+            const randomPrice = Math.floor(Math.random() * (3000 - 100) + 100);
             products.push({ id: i, name: randomName, price: randomPrice });
         }
 
-        // Рендерим 12 карточек в Каталог
         function renderCatalog() {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = "";
-            products.forEach(product => {
+            products.forEach(p => {
                 grid.innerHTML += `
                     <div class="card">
                         <div>
                             <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                            <p class="title">${product.name}</p>
+                            <p class="title">${p.name}</p>
                         </div>
                         <div class="footer">
-                            <span class="price">${product.price} ₽</span>
-                            <button class="buy-btn" onclick="addToCart(${product.id})">Купить</button>
+                            <span class="price">${p.price} ₽</span>
+                            <button class="buy-btn" onclick="addToCart(${p.id})">Купить</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        // Функция добавления товара в корзину
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const cartItem = cart.find(item => item.id === productId);
+        function addToCart(pId) {
+            const p = products.find(prod => prod.id === pId);
+            const cItem = cart.find(item => item.id === pId);
+            if (cItem) { cItem.quantity += 1; } else { cart.push({ ...p, quantity: 1 }); }
+            renderCart();
+            alert(`Товар "${p.name}" добавлен в корзину!`);
+        }
 
-            if (cartItem) {
-                cartItem.quantity += 1; // Если товар уже в корзине, увеличиваем количество
-            } else {
+        function changeQuantity(pId, amount) {
+            const cItem = cart.find(item => item.id === pId);
+            if (!cItem) return;
+            cItem.quantity += amount;
+            if (cItem.quantity <= 0) { cart = cart.filter(item => item.id !== pId); }
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-container');
+            if (cart.length === 0) {
+                container.innerHTML = "В корзине пока пусто. Перейдите в каталог, чтобы выбрать цифровые товары.";
+                return;
+            }
+            let html = ""; let totalSum = 0;
+            cart.forEach(item => {
+                totalSum += item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <span class="cart-item-title">${item.name}</span>
+                            <span class="cart-item-price">${item.price} ₽ / шт.</span>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                            <span style="color:#fff;font-weight:bold;min-width:15px;text-align:center;">${item.quantity}</span>
+                            <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+            html += `<div class="cart-total">Итого к оплате: <span>${totalSum} ₽</span></div>`;
+            container.innerHTML = html;
+        }
+
+        function switchPage(pageId, button) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            button.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        renderCatalog();
+        renderCart();
+    </script>
+</body>
+</html>
