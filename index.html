@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry</title>
-    <!-- Добавляем фавиконку (значок сайта для поиска и вкладок) -->
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png">
+    <link rel="icon" type="image/png" href="https://githubusercontent.com">
     <style>
         body { background-color: #000000 !important; color: #f3f4f6 !important; font-family: sans-serif; margin: 0; padding: 0; }
         header { padding: 16px; border-bottom: 1px solid #1f2937; text-align: center; background-color: #000000; position: sticky; top: 0; z-index: 90; }
@@ -35,33 +34,42 @@
         .nav-item.active { color: #fbbf24; }
         .nav-icon { width: 10px; height: 10px; border-radius: 50px; background-color: #374151; }
         .nav-item.active .nav-icon { background-color: #fbbf24; }
-        .status-msg { text-align: center; color: #fbbf24; padding: 24px; font-size: 14px; font-weight: 500; border: 1px dashed rgba(251, 191, 36, 0.4); border-radius: 16px; background-color: #0d0d0d; line-height: 1.6; }
+        .status-msg { text-align: center; color: #fbbf24; padding: 15px; font-size: 13px; font-weight: 500; border: 1px dashed rgba(251, 191, 36, 0.4); border-radius: 12px; background-color: #0d0d0d; line-height: 1.5; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <header>
         <a href="#">
-            <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" alt="Verry">
+            <img src="https://githubusercontent.com" alt="Verry">
         </a>
     </header>
 
     <main>
+        <!-- СТРАНИЦА: Главная -->
         <div id="home" class="page">
             <div class="page-title">Главная</div>
             <div class="account-box">Приветствуем в Verry! Здесь будут баннеры, новости и самые популярные категории торговой площадки.</div>
         </div>
 
+        <!-- СТРАНИЦА: Каталог -->
         <div id="catalog" class="page active">
+            <!-- Уведомление об оффлайне теперь здесь как текст, ничего не ломая -->
+            <div class="status-msg">
+                Наш сервер находится в офлайн режиме, через некоторое время все восстановится!<br>
+                <span style="color: #9ca3af; font-size: 11px; font-weight: normal;">Приносим извинения за неудобства</span>
+            </div>
             <div class="page-title">Каталог товаров</div>
             <div id="products-grid" class="grid"></div>
         </div>
 
+        <!-- СТРАНИЦА: Корзина -->
         <div id="cart" class="page">
             <div class="page-title">Ваша корзина</div>
             <div id="cart-container" class="cart-box"></div>
         </div>
 
+        <!-- СТРАНИЦА: Аккаунт -->
         <div id="account" class="page">
             <div class="page-title">Личный кабинет</div>
             <div class="account-box">
@@ -81,25 +89,14 @@
 
     <script>
         let cart = [];
-        let products = [];
-        const SERVER_URL = "http://localhost:3000/api/products";
+        const products = [];
+        const itemNames = ["Игровой статус", "Кастомный пак", "Донат-кейс", "Привилегия VIP", "Набор ресурсов", "Пропуск сезона", "Секретный ключ", "Ускоритель опыта", "Золотые монеты", "Эксклюзивный скин", "Промо-код", "Доступ к серверу"];
 
-        async function loadProducts() {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '<div style="color: #9ca3af; text-align: center; grid-column: span 2;">Загрузка товаров...</div>';
-            
-            try {
-                const response = await fetch(SERVER_URL);
-                if (!response.ok) throw new Error();
-                products = await response.json();
-                renderCatalog();
-            } catch (error) {
-                grid.innerHTML = `
-                    <div class="status-msg" style="grid-column: span 2;">
-                        Наш сервер находится в офлайн режиме, через некоторое время все восстановится!<br>
-                        <span style="color: #9ca3af; font-size: 12px; font-weight: normal;">Приносим извинения за неудобства.</span>
-                    </div>`;
-            }
+        // 12 товаров генерируются автономно
+        for (let i = 1; i <= 12; i++) {
+            const randomName = itemNames[(i - 1) % itemNames.length] + " #" + i;
+            const randomPrice = Math.floor(Math.random() * (3000 - 100) + 100);
+            products.push({ id: i, name: randomName, price: randomPrice });
         }
 
         function renderCatalog() {
@@ -168,8 +165,3 @@
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             button.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        loadProducts();
-        renderCart();
