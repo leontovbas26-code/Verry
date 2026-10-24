@@ -17,6 +17,9 @@
             border-bottom: 1px solid #1f2937;
             text-align: center;
             background-color: #000000;
+            position: sticky;
+            top: 0;
+            z-index: 90;
         }
         header img {
             height: 40px;
@@ -26,8 +29,18 @@
             padding: 15px;
             max-width: 600px;
             margin: 0 auto;
-            padding-bottom: 90px; /* Отступ снизу под меню */
+            padding-bottom: 90px;
         }
+        
+        /* Стили для переключения страниц */
+        .page {
+            display: none; /* По умолчанию все страницы скрыты */
+        }
+        .page.active {
+            display: block; /* Показывается только активная страница */
+        }
+
+        /* Страница каталога */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -83,6 +96,23 @@
             border-radius: 8px;
             cursor: pointer;
         }
+
+        /* Заглушки для других страниц */
+        .page-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 15px;
+        }
+        .account-box, .cart-box {
+            background-color: #0d0d0d;
+            border: 1px solid #1f2937;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            color: #9ca3af;
+        }
+
         /* Нижняя панель навигации */
         .bottom-nav {
             position: fixed;
@@ -106,15 +136,23 @@
             font-size: 11px;
             font-weight: 500;
             gap: 4px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 25%;
+            height: 100%;
+            justify-content: center;
         }
         .nav-item.active {
             color: #fbbf24;
         }
         .nav-icon {
-            width: 20px;
-            height: 20px;
+            width: 10px;
+            height: 10px;
             border-radius: 50px;
             background-color: #374151;
+            transition: background-color 0.2s;
         }
         .nav-item.active .nav-icon {
             background-color: #fbbf24;
@@ -123,63 +161,112 @@
 </head>
 <body>
 
-    <!-- Шапка сайта с твоим новым логотипом -->
+    <!-- Шапка сайта -->
     <header>
         <a href="#">
-            <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" alt="Verry">
+            <img src="https://githubusercontent.com" alt="Verry">
         </a>
     </header>
 
-    <!-- Список товаров -->
+    <!-- Основной контент сайта -->
     <main>
-        <div class="grid">
-            
-            <!-- Карточка 1 -->
-            <div class="card">
-                <div>
-                    <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                    <p class="title">Название товара</p>
-                </div>
-                <div class="footer">
-                    <span class="price">990 ₽</span>
-                    <button>Купить</button>
-                </div>
+        
+        <!-- СТРАНИЦА: Главная -->
+        <div id="home" class="page">
+            <div class="page-title">Главная</div>
+            <div class="account-box">
+                Приветствуем в Verry! Здесь будут баннеры, новости и самые популярные категории торговой площадки.
             </div>
-
-            <!-- Карточка 2 -->
-            <div class="card">
-                <div>
-                    <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                    <p class="title">Название товара</p>
-                </div>
-                <div class="footer">
-                    <span class="price">1 490 ₽</span>
-                    <button>Купить</button>
-                </div>
-            </div>
-
         </div>
+
+        <!-- СТРАНИЦА: Каталог (активна при старте) -->
+        <div id="catalog" class="page active">
+            <div class="page-title">Каталог товаров</div>
+            <div class="grid">
+                <!-- Карточка 1 -->
+                <div class="card">
+                    <div>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <p class="title">Название товара</p>
+                    </div>
+                    <div class="footer">
+                        <span class="price">990 ₽</span>
+                        <button>Купить</button>
+                    </div>
+                </div>
+                <!-- Карточка 2 -->
+                <div class="card">
+                    <div>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <p class="title">Название товара</p>
+                    </div>
+                    <div class="footer">
+                        <span class="price">1 490 ₽</span>
+                        <button>Купить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА: Корзина -->
+        <div id="cart" class="page">
+            <div class="page-title">Ваша корзина</div>
+            <div class="cart-box">
+                В корзине пока пусто. Перейдите в каталог, чтобы выбрать цифровые товары.
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА: Аккаунт -->
+        <div id="account" class="page">
+            <div class="page-title">Личный кабинет</div>
+            <div class="account-box">
+                <div style="font-weight: bold; color: #fff; margin-bottom: 5px;">Пользователь</div>
+                <div style="font-size: 13px; margin-bottom: 15px;">Ваш баланс: 0 ₽</div>
+                <div style="color: #fbbf24; font-size: 13px;">История покупок пуста</div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Нижнее меню навигации -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item">
+        <button class="nav-item" onclick="switchPage('home', this)">
             <div class="nav-icon"></div>
             <span>Главная</span>
-        </a>
-        <a href="#" class="nav-item active">
+        </button>
+        <button class="nav-item active" onclick="switchPage('catalog', this)">
             <div class="nav-icon"></div>
             <span>Каталог</span>
-        </a>
-        <a href="#" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="switchPage('cart', this)">
             <div class="nav-icon"></div>
             <span>Корзина</span>
-        </a>
-        <a href="#" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="switchPage('account', this)">
             <div class="nav-icon"></div>
             <span>Аккаунт</span>
-        </a>
+        </button>
     </div>
+
+    <!-- Скрипт мгновенного переключения разделов -->
+    <script>
+        function switchPage(pageId, button) {
+            // Скрываем все страницы
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Убираем подсветку со всех кнопок меню
+            const menuItems = document.querySelectorAll('.nav-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            
+            // Показываем нужную страницу и подсвечиваем кнопку
+            document.getElementById(pageId).classList.add('active');
+            button.classList.add('active');
+            
+            // Скроллим наверх, чтобы страница открывалась с начала
+            window.scrollTo(0, 0);
+        }
+    </script>
 
 </body>
 </html>
