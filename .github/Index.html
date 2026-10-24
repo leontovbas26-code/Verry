@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verry Marketplace</title>
+    <!-- Подключаем Tailwind CSS -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<!-- Глубокий черный фон -->
+<body class="bg-black text-[#f3f4f6] font-sans antialiased">
+
+    <!-- Шапка сайта: на мобилках по центру, на ПК — аккуратно по краям экрана -->
+    <header class="p-6 md:px-12 border-b border-gray-900 bg-black/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <!-- Золотой логотип Verry -->
+            <h1 class="text-3xl font-black text-[#fbbf24] tracking-wider uppercase bg-gradient-to-b from-[#fbbf24] to-[#b47b10] bg-clip-text text-transparent">
+                Verry
+            </h1>
+            <!-- Панель навигации для удобства на ПК -->
+            <nav class="flex gap-6 text-sm text-gray-400">
+                <a href="#" class="text-[#fbbf24] border-b border-[#fbbf24] pb-0.5">Каталог</a>
+                <a href="#" class="hover:text-[#fbbf24] transition">Кабинет</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной блок товаров -->
+    <main class="max-w-6xl mx-auto px-3 md:px-6 py-8">
+        
+        <!-- Умная сетка: 
+             grid-cols-2 — две колонки на смартфонах
+             md:grid-cols-3 — три колонки на планшетах
+             lg:grid-cols-4 — четыре колонки на мониторах ПК -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            
+            <!-- Карточка товара 1 -->
+            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300 group">
+                <div>
+                    <!-- Место под овальное/скругленное фото с GitHub -->
+                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                        <span>[ Картинка ]</span>
+                    </div>
+                    <h3 class="text-sm md:text-base font-semibold text-gray-200 line-clamp-1 group-hover:text-[#fbbf24] transition">Название товара</h3>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
+                    <button class="bg-[#fbbf24] hover:bg-[#f5b014] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition">Купить</button>
+                </div>
+            </div>
+
+            <!-- Карточка товара 2 -->
+            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300 group">
+                <div>
+                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                        <span>[ Картинка ]</span>
+                    </div>
+                    <h3 class="text-sm md:text-base font-semibold text-gray-200 line-clamp-1 group-hover:text-[#fbbf24] transition">Название товара</h3>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">1 490 ₽</span>
+                    <button class="bg-[#fbbf24] hover:bg-[#f5b014] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition">Купить</button>
+                </div>
+            </div>
+
+            <!-- Карточка товара 3 -->
+            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300 group">
+                <div>
+                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                        <span>[ Картинка ]</span>
+                    </div>
+                    <h3 class="text-sm md:text-base font-semibold text-gray-200 line-clamp-1 group-hover:text-[#fbbf24] transition">Название товара</h3>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">450 ₽</span>
+                    <button class="bg-[#fbbf24] hover:bg-[#f5b014] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition">Купить</button>
+                </div>
+            </div>
+
+            <!-- Карточка товара 4 -->
+            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300 group">
+                <div>
+                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                        <span>[ Картинка ]</span>
+                    </div>
+                    <h3 class="text-sm md:text-base font-semibold text-gray-200 line-clamp-1 group-hover:text-[#fbbf24] transition">Название товара</h3>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">2 990 ₽</span>
+                    <button class="bg-[#fbbf24] hover:bg-[#f5b014] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition">Купить</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
