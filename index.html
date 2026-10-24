@@ -32,15 +32,14 @@
             padding-bottom: 90px;
         }
         
-        /* Стили для переключения страниц */
         .page {
-            display: none; /* По умолчанию все страницы скрыты */
+            display: none;
         }
         .page.active {
-            display: block; /* Показывается только активная страница */
+            display: block;
         }
 
-        /* Страница каталога */
+        /* Сетка каталога */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -86,7 +85,7 @@
             font-weight: bold;
             color: #fbbf24;
         }
-        button {
+        button.buy-btn {
             background-color: #fbbf24;
             color: #000000;
             border: none;
@@ -97,7 +96,6 @@
             cursor: pointer;
         }
 
-        /* Заглушки для других страниц */
         .page-title {
             font-size: 20px;
             font-weight: bold;
@@ -109,11 +107,67 @@
             border: 1px solid #1f2937;
             padding: 20px;
             border-radius: 16px;
-            text-align: center;
             color: #9ca3af;
         }
 
-        /* Нижняя панель навигации */
+        /* Элементы корзины */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #1f2937;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .cart-item-title {
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .cart-item-price {
+            color: #fbbf24;
+            font-size: 13px;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .qty-btn {
+            background-color: #1f2937;
+            color: #fff;
+            border: 1px solid #374151;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-btn:hover {
+            background-color: #374151;
+        }
+        .cart-total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .cart-total span {
+            color: #fbbf24;
+        }
+
+        /* Нижнее меню навигации */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -161,16 +215,13 @@
 </head>
 <body>
 
-    <!-- Шапка сайта с твоим логотипом -->
     <header>
         <a href="#">
-            <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" alt="Verry">
+            <img src="https://githubusercontent.com" alt="Verry">
         </a>
     </header>
 
-    <!-- Основной контент сайта -->
     <main>
-        
         <!-- СТРАНИЦА: Главная -->
         <div id="home" class="page">
             <div class="page-title">Главная</div>
@@ -179,40 +230,19 @@
             </div>
         </div>
 
-        <!-- СТРАНИЦА: Каталог (активна при старте) -->
+        <!-- СТРАНИЦА: Каталог -->
         <div id="catalog" class="page active">
             <div class="page-title">Каталог товаров</div>
-            <div class="grid">
-                <!-- Карточка 1 -->
-                <div class="card">
-                    <div>
-                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                        <p class="title">Название товара</p>
-                    </div>
-                    <div class="footer">
-                        <span class="price">990 ₽</span>
-                        <button>Купить</button>
-                    </div>
-                </div>
-                <!-- Карточка 2 -->
-                <div class="card">
-                    <div>
-                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                        <p class="title">Название товара</p>
-                    </div>
-                    <div class="footer">
-                        <span class="price">1 490 ₽</span>
-                        <button>Купить</button>
-                    </div>
-                </div>
+            <div id="products-grid" class="grid">
+                <!-- Карточки сгенерируются скриптом автоматически -->
             </div>
         </div>
 
         <!-- СТРАНИЦА: Корзина -->
         <div id="cart" class="page">
             <div class="page-title">Ваша корзина</div>
-            <div class="cart-box">
-                В корзине пока пусто. Перейдите в каталог, чтобы выбрать цифровые товары.
+            <div id="cart-container" class="cart-box">
+                <!-- Содержимое корзины сгенерируется скриптом автоматически -->
             </div>
         </div>
 
@@ -225,10 +255,8 @@
                 <div style="color: #fbbf24; font-size: 13px;">История покупок пуста</div>
             </div>
         </div>
-
     </main>
 
-    <!-- Нижнее меню навигации -->
     <div class="bottom-nav">
         <button class="nav-item" onclick="switchPage('home', this)">
             <div class="nav-icon"></div>
@@ -248,25 +276,46 @@
         </button>
     </div>
 
-    <!-- Полный рабочий скрипт переключения разделов -->
     <script>
-        function switchPage(pageId, button) {
-            // Скрываем все страницы
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            // Убираем подсветку со всех кнопок меню
-            const menuItems = document.querySelectorAll('.nav-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            
-            // Показываем нужную страницу и подсвечиваем кнопку
-            document.getElementById(pageId).classList.add('active');
-            button.classList.add('active');
-            
-            // Скроллим наверх для удобства
-            window.scrollTo(0, 0);
-        }
-    </script>
+        // Глобальный массив с корзиной (хранится в памяти браузера)
+        let cart = [];
 
-</body>
-</html>
+        // База данных возможных названий и цен для создания 12 случайных карточек
+        const itemNames = ["Игровой статус", "Кастомный пак", "Донат-кейс", "Привилегия VIP", "Набор ресурсов", "Пропуск сезона", "Секретный ключ", "Ускоритель опыта", "Золотые монеты", "Эксклюзивный скин", "Промо-код", "Доступ к серверу"];
+        const products = [];
+
+        // Генерируем ровно 12 случайных товаров
+        for (let i = 1; i <= 12; i++) {
+            const randomName = itemNames[(i - 1) % itemNames.length] + " #" + i;
+            const randomPrice = Math.floor(Math.random() * (3000 - 100) + 100); // Цена от 100 до 3000 руб
+            products.push({ id: i, name: randomName, price: randomPrice });
+        }
+
+        // Рендерим 12 карточек в Каталог
+        function renderCatalog() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = "";
+            products.forEach(product => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div>
+                            <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                            <p class="title">${product.name}</p>
+                        </div>
+                        <div class="footer">
+                            <span class="price">${product.price} ₽</span>
+                            <button class="buy-btn" onclick="addToCart(${product.id})">Купить</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Функция добавления товара в корзину
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = cart.find(item => item.id === productId);
+
+            if (cartItem) {
+                cartItem.quantity += 1; // Если товар уже в корзине, увеличиваем количество
+            } else {
