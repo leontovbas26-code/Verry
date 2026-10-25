@@ -305,71 +305,46 @@
         </nav>
     </div>
 </header>
-    <main>
-        <div class="offline-badge">
-            <p>Наш сервер находится в офлайн режиме, через некоторое время все восстановится!</p>
-            <span>Приносим извинения за неудобства</span>
+    <!-- Основной блок -->
+<main class="max-w-6xl mx-auto px-3 md:px-6 py-8">
+    
+    <!-- СТРАНИЦА: КАТАЛОГ -->
+    <div id="page-catalog" class="page-section">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            <!-- Твоя карточка товара 1 -->
+            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg">
+                <div>
+                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                        <span>[ Картинка ]</span>
+                    </div>
+                    <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара</h3>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
+                    <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg">Купить</button>
+                </div>
+            </div>
+            <!-- Сюда вставь остальные свои карточки товаров, если они есть -->
         </div>
-        <h2>Каталог</h2>
-        <div class="controls-block">
-            <input type="text" id="search-input" placeholder="Поиск товаров на Verry...">
-            <div class="categories-container">
-                <button class="category-btn active-category" data-category="all">Все</button>
-                <button class="category-btn" data-category="electronics">Электроника</button>
-                <button class="category-btn" data-category="clothes">Одежда</button>
-            </div>
+    </div>
+
+    <!-- СТРАНИЦА: КАБИНЕТ -->
+    <div id="page-cabinet" class="page-section hidden">
+        <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto">
+            <h2 class="text-xl font-bold text-[#fbbf24] mb-4">Личный кабинет</h2>
+            <p class="text-gray-400 text-sm">Добро пожаловать в Verry Marketplace!</p>
         </div>
-        <div class="products-grid" id="products-grid">
-            <div class="product-card gold-animated-border" data-category="electronics">
-                <div class="product-card-inner">
-                    <div>
-                        <div class="image-placeholder"><span>[ Наушники ]</span></div>
-                        <div class="product-title">Беспроводные наушники</div>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-price">1 885 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card gold-animated-border" data-category="clothes">
-                <div class="product-card-inner">
-                    <div>
-                        <div class="image-placeholder"><span>[ Худи ]</span></div>
-                        <div class="product-title">Черное оверсайз худи</div>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-price">2 089 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card gold-animated-border" data-category="electronics">
-                <div class="product-card-inner">
-                    <div>
-                        <div class="image-placeholder"><span>[ Пауэрбанк ]</span></div>
-                        <div class="product-title">Повербанк 20000 мАч</div>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-price">1 490 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-card gold-animated-border" data-category="clothes">
-                <div class="product-card-inner">
-                    <div>
-                        <div class="image-placeholder"><span>[ Футболка ]</span></div>
-                        <div class="product-title">Белая хлопковая футболка</div>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-price">990 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
-            </div>
+    </div>
+
+    <!-- СТРАНИЦА: КОРЗИНА -->
+    <div id="page-cart" class="page-section hidden">
+        <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto">
+            <h2 class="text-xl font-bold text-[#fbbf24] mb-4">Ваша корзина</h2>
+            <p class="text-gray-400 text-sm">Здесь будут отображаться отложенные товары.</p>
         </div>
-    </main>
+    </div>
+
+</main>
     <div class="bottom-nav">
         <div class="nav-links">
             <a href="#" class="nav-item"><span>🏠</span><span>Главная</span></a>
