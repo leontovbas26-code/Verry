@@ -124,7 +124,10 @@
         <button class="nav-item" onclick="switchPage('cart', this)"><div class="nav-icon"></div><span>Корзина</span></button>
         <button class="nav-item" onclick="switchPage('account', this)"><div class="nav-icon"></div><span>Аккаунт</span></button>
     </div>
-    <script>
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#fbbf24] text-black text-sm font-bold px-6 py-3 rounded-xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4 z-50">
+    Товар добавлен!
+    </div>
+<script>
         let cart = []; const products = [];
         let currentBalance = 0; let activatedPromos = [];
         const names = ["Игровой статус", "Кастомный пак", "Донат-кейс", "Привилегия VIP", "Набор ресурсов", "Пропуск сезона", "Секретный ключ", "Ускоритель опыта", "Золотые монеты", "Эксклюзивный скин", "Промо-код", "Доступ к серверу"];
