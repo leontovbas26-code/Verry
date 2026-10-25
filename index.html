@@ -56,3 +56,80 @@
             </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="products-grid">
+            <div class="product-card gold-animated-border shadow-lg" data-category="electronics">
+                <div class="bg-[#0d0d0d] rounded-2xl p-3 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Наушники ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Беспроводные наушники</h3>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">1 885 ₽</span>
+                        <button class="buy-btn bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card gold-animated-border shadow-lg" data-category="clothes">
+                <div class="bg-[#0d0d0d] rounded-2xl p-3 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Худи ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Черное оверсайз худи</h3>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">2 089 ₽</span>
+                        <button class="buy-btn bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card gold-animated-border shadow-lg" data-category="electronics">
+                <div class="bg-[#0d0d0d] rounded-2xl p-3 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Пауэрбанк ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Повербанк 20000 мАч</h3>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">1 490 ₽</span>
+                        <button class="buy-btn bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card gold-animated-border shadow-lg" data-category="clothes">
+                <div class="bg-[#0d0d0d] rounded-2xl p-3 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Футболка ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Белая хлопковая футболка</h3>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
+                        <button class="buy-btn bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="fixed bottom-0 left-0 right-0 bg-[#070707]/90 backdrop-blur-md border-t border-gray-900 p-3 z-40">
+        <div class="max-w-md mx-auto flex justify-between text-center text-xs text-gray-500">
+            <a href="#" class="flex flex-col items-center gap-1 hover:text-[#fbbf24] transition">
+                <span>🏠</span><span>Главная</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 text-[#fbbf24] font-medium transition">
+                <span>📁</span><span>Каталог</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 hover:text-[#fbbf24] transition">
+                <span>🛒</span><span>Корзина</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 hover:text-[#fbbf24] transition">
+                <span>👤</span><span>Аккаунт</span>
+            </a>
+        </div>
+    </div>
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#fbbf24] text-black text-xs font-bold px-6 py-3 rounded-xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4 z-50">
+        Товар добавлен!
+    </div>
