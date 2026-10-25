@@ -294,15 +294,17 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <h1>Verry</h1>
-            <nav>
-                <a href="#" class="active">Каталог</a>
-                <a href="#">Кабинет</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Шапка сайта -->
+<header class="p-6 md:px-12 border-b border-gray-900 bg-black sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <h1 class="text-3xl font-black text-[#fbbf24] tracking-wider uppercase">Verry</h1>
+        <nav class="flex gap-6 text-sm text-gray-400">
+            <button onclick="showPage('catalog')" id="nav-catalog" class="text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold">Каталог</button>
+            <button onclick="showPage('cabinet')" id="nav-cabinet" class="hover:text-[#fbbf24] transition">Кабинет</button>
+            <button onclick="showPage('cart')" id="nav-cart" class="hover:text-[#fbbf24] transition">Корзина</button>
+        </nav>
+    </div>
+</header>
     <main>
         <div class="offline-badge">
             <p>Наш сервер находится в офлайн режиме, через некоторое время все восстановится!</p>
