@@ -70,3 +70,136 @@
     <header>
         <a href="#"><img src="https://githubusercontent.com" alt="Verry"></a>
     </header>
+    <main>
+        <div id="home" class="page">
+            <div class="page-title">Главная</div>
+            <div class="account-box">Приветствуем в Verry! Здесь будут баннеры, новости и самые популярные категории торговой площадки.</div>
+        </div>
+        <div id="catalog" class="page active">
+            <div class="status-msg">
+                Наш сервер находится в офлайн режиме, через некоторое время все восстановится!<br>
+                <span style="color:#9ca3af;font-size:11px;font-weight:normal">Приносим извинения за неудобства</span>
+            </div>
+            <div class="page-title">Каталог товаров</div>
+            <div id="products-grid" class="grid"></div>
+        </div>
+        <div id="cart" class="page">
+            <div class="page-title">Ваша корзина</div>
+            <div id="cart-container" class="cart-box"></div>
+        </div>
+        <div id="account" class="page">
+            <div class="page-title">Личный кабинет</div>
+            <div class="account-box">
+                <div class="profile-header">
+                    <div class="profile-avatar"><img src="https://githubusercontent.com" alt="Avatar"></div>
+                    <div class="profile-info">
+                        <span id="profile-username-display" class="profile-name">Загрузка...</span>
+                        <span class="profile-status">Пользователь площадки</span>
+                    </div>
+                </div>
+                <div class="balance-card">
+                    <div>
+                        <div style="font-size: 12px; color: #9ca3af;">Доступный баланс</div>
+                        <div id="user-balance" class="balance-num">0 ₽</div>
+                    </div>
+                    <button class="action-btn" onclick="alert('Пополнение баланса временно недоступно в оффлайн-режиме!')">Пополнить</button>
+                </div>
+                <div class="promo-section">
+                    <div class="promo-title">Активация подарочного промокода</div>
+                    <div class="promo-input-group">
+                        <input type="text" id="promo-field" class="promo-input" placeholder="Введите код (например, VERRY2026)">
+                        <button class="action-btn" style="border-color:#fbbf24" onclick="activatePromo()">Ввод</button>
+                    </div>
+                </div>
+                <div style="text-align: left; margin-top: 25px; border-top: 1px solid #1f2937; padding-top: 15px;">
+                    <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 10px;">История операций</div>
+                    <div style="color: #6b7280; font-size: 13px; text-align: center; padding: 10px 0;">У вас пока нет покупок</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="switchPage('home', this)"><div class="nav-icon"></div><span>Главная</span></button>
+        <button class="nav-item active" onclick="switchPage('catalog', this)"><div class="nav-icon"></div><span>Каталог</span></button>
+        <button class="nav-item" onclick="switchPage('cart', this)"><div class="nav-icon"></div><span>Корзина</span></button>
+        <button class="nav-item" onclick="switchPage('account', this)"><div class="nav-icon"></div><span>Аккаунт</span></button>
+    </div>
+    <script>
+        let cart = []; const products = [];
+        let currentBalance = 0; let activatedPromos = [];
+        const names = ["Игровой статус", "Кастомный пак", "Донат-кейс", "Привилегия VIP", "Набор ресурсов", "Пропуск сезона", "Секретный ключ", "Ускоритель опыта", "Золотые монеты", "Эксклюзивный скин", "Промо-код", "Доступ к серверу"];
+        for (let i = 1; i <= 12; i++) {
+            products.push({ id: i, name: names[(i - 1) % names.length] + " #" + i, price: Math.floor(Math.random() * 2900 + 100) });
+        }
+        function checkUserAuth() {
+            const savedName = localStorage.getItem('verry_username');
+            if (!savedName) { document.getElementById('auth-screen').style.display = 'flex'; } 
+            else { document.getElementById('profile-username-display').innerText = savedName; }
+        }
+        function saveUserName() {
+            const input = document.getElementById('auth-name-field'); const name = input.value.trim();
+            if (name === "") return alert("Пожалуйста, введите корректное имя!");
+            localStorage.setItem('verry_username', name);
+            document.getElementById('profile-username-display').innerText = name;
+            document.getElementById('auth-screen').style.display = 'none';
+        }
+        function renderCatalog() {
+            const g = document.getElementById('products-grid'); g.innerHTML = "";
+            products.forEach(p => {
+                g.innerHTML += `<div class="card">
+                    <div>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <p class="title">${p.name}</p>
+                    </div>
+                    <div class="footer"><span class="price">${p.price} ₽</span><button class="buy-btn" onclick="addToCart(${p.id})">Купить</button></div>
+                </div>`;
+            });
+        }
+        function addToCart(id) {
+            const p = products.find(prod => prod.id === id); if (!p) return;
+            const item = cart.find(i => i.id === id);
+            if (item) { item.quantity += 1; } else { cart.push({ ...p, quantity: 1 }); }
+            renderCart(); alert(`Товар "${p.name}" добавлен!`);
+        }
+        function changeQuantity(id, amt) {
+            const item = cart.find(i => i.id === id); if (!item) return;
+            item.quantity += amt; if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+            renderCart();
+        }
+        function renderCart() {
+            const c = document.getElementById('cart-container');
+            if (cart.length === 0) { c.innerHTML = "В корзине пока пусто."; return; }
+            let h = ""; let sum = 0;
+            cart.forEach(item => {
+                sum += item.price * item.quantity;
+                h += `<div class="cart-item">
+                    <div class="cart-item-info"><span class="cart-item-title">${item.name}</span><span class="cart-item-price">${item.price} ₽</span></div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQuantity(${item.id},-1)">-</button>
+                        <span style="color:#fff;font-weight:bold">${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQuantity(${item.id},1)">+</button>
+                    </div>
+                </div>`;
+            });
+            c.innerHTML = h + `<div class="cart-total">Итого: <span>${sum} ₽</span></div>`;
+        }
+        function activatePromo() {
+            const field = document.getElementById('promo-field'); const code = field.value.trim().toUpperCase();
+            if (code === "") return alert("Поле ввода пусто!");
+            if (activatedPromos.includes(code)) return alert("Этот промокод уже был активирован!");
+            if (code === "VERRY2026") {
+                currentBalance += 500; activatedPromos.push(code);
+                document.getElementById('user-balance').innerText = `${currentBalance} ₽`;
+                alert("Успешно! Промокод VERRY2026 активирован. Вам начислено 500 ₽!"); field.value = "";
+            } else { alert("Ошибка! Такого промокода не существует."); }
+        }
+        function switchPage(id, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(id).classList.add('active'); btn.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        checkUserAuth(); renderCatalog(); renderCart();
+    </script>
+</body>
+</html>
