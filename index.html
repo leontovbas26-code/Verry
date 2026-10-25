@@ -377,3 +377,59 @@
         </div>
     </div>
     <div id="toast">Товар добавлен!</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const toast = document.getElementById('toast');
+            const buyButtons = document.querySelectorAll('.buy-btn');
+
+            function showToast(message) {
+                toast.innerText = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+
+            buyButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    const title = card.querySelector('.product-title').innerText;
+                    showToast(`Товар "${title}" добавлен!`);
+                });
+            });
+
+            function filterProducts() {
+                const query = searchInput.value.toLowerCase().trim();
+                const activeCategory = document.querySelector('.category-btn.active-category').dataset.category;
+                const cards = document.querySelectorAll('.product-card');
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.product-title').innerText.toLowerCase();
+                    const cardCategory = card.dataset.category || 'all';
+                    
+                    const matchesSearch = title.includes(query);
+                    const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
+                    
+                    if (matchesSearch && matchesCategory) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', filterProducts);
+
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active-category'));
+                    btn.classList.add('active-category');
+                    filterProducts();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
