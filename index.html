@@ -408,5 +408,26 @@
             });
         });
     </script>
+    <script>
+function showPage(pageId) {
+    // Прячем все страницы
+    document.querySelectorAll('.page-section').forEach(page => {
+        page.classList.add('hidden');
+    });
+    // Показываем нужную
+    document.getElementById('page-' + pageId).classList.remove('hidden');
+
+    // Сбрасываем стили у всех кнопок навигации
+    const navButtons = ['catalog', 'cabinet', 'cart'];
+    navButtons.forEach(id => {
+        const btn = document.getElementById('nav-' + id);
+        btn.className = "hover:text-[#fbbf24] transition";
+    });
+
+    // Подсвечиваем активную кнопку
+    const activeBtn = document.getElementById('nav-' + pageId);
+    activeBtn.className = "text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold";
+}
+    </script>
 </body>
 </html>
