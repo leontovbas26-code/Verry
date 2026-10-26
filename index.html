@@ -307,18 +307,29 @@ function checkSavedSession() {
         showToast('Вы вышли из системы.', '#9ca3af');
     }
 
-    // Реактивный онлайн
-    setInterval(async () => {
-        try {
-            const res = await fetch('https://verry-server.onrender.com/api/ping', { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: currentUser ? currentUser.username : null })
-            });
-            const data = await res.json();
-            if (data.success) document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
-        } catch (e) {}
-    }, 1000);
+    // Кол-во человек
+    // Замени старый setInterval на этот рабочий вариант:
+setInterval(async () => {
+    try {
+        // Проверяем, есть ли вообще пользователь и его имя, чтобы не вызывать ошибку undefined
+        const nameToSend = (currentUser && typeof currentUser === 'object') ? currentUser.username : null;
+
+        const res = await fetch('https://onrender.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: nameToSend })
+        });
+        
+        const data = await res.json();
+        // Защита: проверяем, есть ли вообще элемент счетчика на этой странице
+        const onlineCounterEl = document.getElementById('admin-online-counter');
+        if (data.success && onlineCounterEl) {
+            onlineCounterEl.innerText = data.online + ' чел.';
+        }
+    } catch (e) {
+        // Ошибки сети не должны ломать остальной JavaScript
+    }
+}, 1000);
         
     checkSavedSession();
     loadProducts();
