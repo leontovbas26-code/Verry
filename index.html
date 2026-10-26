@@ -244,23 +244,61 @@
                 updateUI();
                 loadProducts();
             } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
-        } catch (e) { showToast('Нет связи с сервером.', '#ef4444'); }
-    }
+        } catch (e) { showToast('Нет связи с сервером.', '#
 
     function updateUI() {
-        if (currentUser) {
-            document.getElementById('auth-form-block').classList.add('hidden');
-            document.getElementById('profile-block').classList.remove('hidden');
-            document.getElementById('profile-name').innerText = 'Пользователь: ' + currentUser.username;
-            document.getElementById('profile-balance').innerText = currentUser.balance + ' ₽';
-            if (currentUser.role === 'admin') document.getElementById('nav-admin').classList.remove('hidden');
-        } else {
-            document.getElementById('auth-form-block').classList.remove('hidden');
-            document.getElementById('profile-block').classList.add('hidden');
-            document.getElementById('nav-admin').classList.add('hidden');
-            showPage('catalog');
+    if (currentUser) {
+        // Защита: если элементы авторизации есть на странице, скрываем их
+        const authFormBlock = document.getElementById('auth-form-block');
+        if (authFormBlock) authFormBlock.classList.add('hidden');
+
+        const profileBlock = document.getElementById('profile-block');
+        if (profileBlock) profileBlock.classList.remove('hidden');
+
+        const profileName = document.getElementById('profile-name');
+        if (profileName) profileName.innerText = 'Пользователь: ' + (currentUser.username || 'admin');
+
+        // Безопасный вывод баланса (если его нет у админа, покажет 0)
+        const profileBalance = document.getElementById('profile-balance');
+        if (profileBalance) {
+            profileBalance.innerText = (currentUser.balance !== undefined ? currentUser.balance : 0) + ' ₽';
         }
+
+        // Если роль админа — показываем ссылку на админку
+        const navAdmin = document.getElementById('nav-admin');
+        if (navAdmin) {
+            if (currentUser.role === 'admin') {
+                navAdmin.classList.remove('hidden');
+            } else {
+                navAdmin.classList.add('hidden');
+            }
+        }
+    } else {
+        // Если пользователь вышел
+        const authFormBlock = document.getElementById('auth-form-block');
+        if (authFormBlock) authFormBlock.classList.remove('hidden');
+
+        const profileBlock = document.getElementById('profile-block');
+        if (profileBlock) profileBlock.classList.add('hidden');
+
+        const navAdmin = document.getElementById('nav-admin');
+        if (navAdmin) navAdmin.classList.add('hidden');
     }
+}
+
+function checkSavedSession() {
+    const savedUser = localStorage.getItem('verry_user');
+    if (savedUser) {
+        try {
+            // Если в localStorage лежит JSON-объект (обычный юзер)
+            currentUser = JSON.parse(savedUser);
+        } catch (e) {
+            // If it's a plain string "admin" from the new cabinet
+            currentUser = { username: savedUser, role: savedUser, balance: 0 };
+        }
+        updateUI();
+    }
+}
 
     function logout() {
         currentUser = null;
@@ -281,21 +319,6 @@
             if (data.success) document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
         } catch (e) {}
     }, 1000);
-
-// СТАЛО:
-function checkSavedSession() {
-    const savedUser = localStorage.getItem('verry_user');
-    if (savedUser) {
-        try {
-            // Если там сохранен полноценный JSON-объект пользователя
-            currentUser = JSON.parse(savedUser);
-        } catch (e) {
-            // Если там просто строка "admin" из нового кабинета
-            currentUser = { username: savedUser, role: savedUser, balance: 0 };
-        }
-        updateUI();
-    }
-}
         
     checkSavedSession();
     loadProducts();
