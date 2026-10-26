@@ -42,25 +42,38 @@
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 16px; } }
 
-        /* Твой идеальный стиль чёрных карточек с постоянной 2px золотой рамкой */
+        /* Твой стиль чёрных карточек с переливающейся золотой рамкой */
         .product-card {
-            background-color: #0d0d0d !important; 
-            border-radius: 12px; 
+            background-color: #0d0d0d !important;
+            border-radius: 12px;
             padding: 14px;
-            display: flex; 
-            flex-direction: column; 
+            display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            position: relative; 
+            position: relative;
             min-height: 320px;
             z-index: 1;
-            box-shadow: 0 0 0 1px #fbbf24;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, box-shadow 0.3s ease; 
+
+        /* Изначально рамка 1 пиксель */
+            border: 1px solid transparent;
+            background-image: linear-gradient(#0d0d0d, #0d0d0d), linear-gradient(90deg, #fbbf24, #b45309, #fef08a, #ffffff, #fbbf24);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            background-size: 100% 100%, 300% 300%;
+            animation: shimmer 4s infinite linear;
+
+  /* Убираем border-width из transition, чтобы толщина и цвет при уходе курсора менялись МГНОВЕННО */
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
+
         .product-card:hover {
-            background-color: #241a05 !important; 
+   /* При наведении рамка становится 2 пикселя */
+            border-width: 2px;
+            background-image: linear-gradient(#241a05, #241a05), linear-gradient(90deg, #fbbf24, #b45309, #fef08a, #ffffff, #fbbf24);
             transform: scale(1.05);
             z-index: 30;
-            box-shadow: 0 0 0 2px #fbbf24, 0 12px 30px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.4);
         }
         
         .img-placeholder {
