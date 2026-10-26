@@ -9,7 +9,7 @@
         body { background-color: #000000; color: #f3f4f6; font-family: sans-serif; }
         
         header {
-            padding: 24px;
+            padding: 16px 24px;
             border-bottom: 1px solid #111827;
             background-color: #000000;
             position: sticky;
@@ -29,9 +29,9 @@
             .header-container { flex-direction: row; }
         }
         
-        .logo-block { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 40px; height: 40px; object-fit: contain; }
-        h1 { color: #fbbf24; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; font-size: 28px; }
+        /* Блок логотипа без лишнего текста */
+        .logo-block { display: flex; align-items: center; }
+        .logo-large { width: 64px; height: 64px; object-fit: contain; }
         
         nav { display: flex; gap: 24px; font-size: 14px; }
         nav button {
@@ -139,8 +139,8 @@
     <header>
         <div class="header-container">
             <div class="logo-block">
-                <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" class="logo-icon">
-                <h1>Verry</h1>
+                <!-- Твой крупный зашифрованный золотой логотип -->
+                <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" class="logo-large">
             </div>
             <nav>
                 <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
@@ -151,8 +151,10 @@
     </header>
 
     <main>
+        <!-- СТРАНИЦА: КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
             <div class="grid">
+                <!-- Товар 1 -->
                 <div class="product-card">
                     <div>
                         <div class="img-placeholder"><span>[ Картинка ]</span></div>
@@ -163,6 +165,7 @@
                         <button class="buy-btn">Купить</button>
                     </div>
                 </div>
+                <!-- Товар 2 -->
                 <div class="product-card">
                     <div>
                         <div class="img-placeholder"><span>[ Картинка ]</span></div>
@@ -176,6 +179,7 @@
             </div>
         </div>
 
+        <!-- СТРАНИЦА: КАБИНЕТ -->
         <div id="page-cabinet" class="page-section hidden">
             <div class="info-box">
                 <h2>Личный кабинет</h2>
@@ -183,6 +187,7 @@
             </div>
         </div>
 
+        <!-- СТРАНИЦА: КОРЗИНА -->
         <div id="page-cart" class="page-section hidden">
             <div class="info-box">
                 <h2>Ваша корзина</h2>
