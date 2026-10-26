@@ -29,7 +29,6 @@
             .header-container { flex-direction: row; }
         }
         
-        /* Блок логотипа с текстом */
         .logo-block { display: flex; align-items: center; gap: 12px; }
         .logo-icon { width: 40px; height: 40px; object-fit: contain; }
         h1 { color: #fbbf24; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; font-size: 28px; }
@@ -56,7 +55,7 @@
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
-        /* Легендарная золотая переливающаяся обводка 3px */
+        /* Изящная золотая переливающаяся обводка строго 2px */
         .product-card {
             background-color: #0d0d0d;
             border-radius: 16px;
@@ -65,13 +64,13 @@
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            border: 3px solid transparent;
+            border: 2px solid transparent;
             background-clip: padding-box;
         }
         .product-card::after {
             content: '';
             position: absolute;
-            top: -3px; bottom: -3px; left: -3px; right: -3px;
+            top: -2px; bottom: -2px; left: -2px; right: -2px;
             background: linear-gradient(135deg, #fbbf24, #b45309, #d97706, #fbbf24);
             background-size: 300% 300%;
             border-radius: 16px;
@@ -140,7 +139,6 @@
     <header>
         <div class="header-container">
             <div class="logo-block">
-                <!-- Твой фирменный золотой логотип -->
                 <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" class="logo-icon" alt="Logo">
                 <h1>Verry</h1>
             </div>
@@ -153,10 +151,8 @@
     </header>
 
     <main>
-        <!-- СТРАНИЦА: КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
             <div class="grid">
-                <!-- Товар 1 -->
                 <div class="product-card">
                     <div>
                         <div class="img-placeholder"><span>[ Картинка ]</span></div>
@@ -167,7 +163,6 @@
                         <button class="buy-btn">Купить</button>
                     </div>
                 </div>
-                <!-- Товар 2 -->
                 <div class="product-card">
                     <div>
                         <div class="img-placeholder"><span>[ Картинка ]</span></div>
@@ -181,7 +176,6 @@
             </div>
         </div>
 
-        <!-- СТРАНИЦА: КАБИНЕТ -->
         <div id="page-cabinet" class="page-section hidden">
             <div class="info-box">
                 <h2>Личный кабинет</h2>
@@ -189,7 +183,6 @@
             </div>
         </div>
 
-        <!-- СТРАНИЦА: КОРЗИНА -->
         <div id="page-cart" class="page-section hidden">
             <div class="info-box">
                 <h2>Ваша корзина</h2>
