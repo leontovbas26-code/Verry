@@ -208,16 +208,19 @@
         document.getElementById('page-' + pageId).classList.remove('hidden');
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
         if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
+        
+        if (pageId === 'cart') {
+            loadCart();
+        }
     }
 
-    // Загрузка товаров с поддержкой категорий и описаний
+    // Загрузка каталога
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
             const response = await fetch('http://localhost:3000/api/products');
             const products = await response.json();
             grid.innerHTML = '';
-            
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -245,7 +248,42 @@
         }
     }
 
-    // Покупка
+    // Загрузка Корзины с бэкенда
+    async function loadCart() {
+        const listContainer = document.getElementById('cart-items-list');
+        if (!currentUser) {
+            listContainer.innerHTML = '<p style="color: #9ca3af; text-align: center; width: 100%; padding: 20px;">❌ Для просмотра покупок войдите в личный кабинет.</p>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/cart/${currentUser.username}`);
+            const cartItems = await response.json();
+            
+            if (cartItems.length === 0) {
+                listContainer.innerHTML = '<p style="color: #6b7280; text-align: center; width: 100%; padding: 20px;">У вас пока нет покупок. Загляните в каталог! 😉</p>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            cartItems.forEach(item => {
+                const itemRow = document.createElement('div');
+                itemRow.style.cssText = "display: flex; justify-content: space-between; align-items: center; background-color: #141414; padding: 12px 16px; border-radius: 8px; border: 1px solid #1f2937;";
+                itemRow.innerHTML = `
+                    <div>
+                        <p style="font-weight: bold; color: #e5e7eb; font-size: 14px;">${item.name}</p>
+                        <p style="font-size: 11px; color: #6b7280; margin-top: 2px;">Категория: ${item.category}</p>
+                    </div>
+                    <span style="color: #fbbf24; font-weight: bold; font-size: 15px;">${item.price} ₽</span>
+                `;
+                listContainer.appendChild(itemRow);
+            });
+        } catch (e) {
+            listContainer.innerHTML = '<p style="color: #ef4444; text-align: center; width: 100%; padding: 20px;">Ошибка связи с сервером при загрузке списка покупок.</p>';
+        }
+    }
+
+    // Покупка товара
     async function buyProduct(productId) {
         if (!currentUser) return alert('Ошибка: Для покупки сначала войдите в Личный кабинет!');
         try {
@@ -256,19 +294,19 @@
             });
             const data = await response.json();
             if (data.success) {
-                alert('🎉 Успешная покупка!');
+                alert('🎉 Успешная покупка! Товар отправлен в вашу Корзину.');
                 currentUser.balance = data.newBalance;
+                
+                // Перезаписываем сохраненные данные в памяти браузера, чтобы обновить баланс
+                localStorage.setItem('verry_user', JSON.stringify(currentUser));
+                
                 updateUI();
                 loadProducts();
-            } else {
-                alert('Ошибка: ' + data.error);
-            }
-        } catch (e) {
-            alert('Нет связи с сервером.');
-        }
+            } else { alert('Ошибка: ' + data.error); }
+        } catch (e) { alert('Нет связи с сервером.'); }
     }
 
-    // Промокоды
+    // Активация промокода
     async function activatePromo() {
         const codeInput = document.getElementById('promo-input').value;
         if (!codeInput) return;
@@ -282,15 +320,17 @@
             if (data.success) {
                 alert(`🔥 Баланс пополнен на +${data.reward} ₽`);
                 currentUser.balance = data.newBalance;
+                
+                // Перезаписываем обновленный баланс в память браузера
+                localStorage.setItem('verry_user', JSON.stringify(currentUser));
+                
                 updateUI();
                 document.getElementById('promo-input').value = '';
-            } else {
-                alert('Ошибка: ' + data.error);
-            }
+            } else { alert('Ошибка: ' + data.error); }
         } catch (e) { alert('Сервер недоступен.'); }
     }
 
-    // Авторизация
+    // Авторизация (Вход)
     async function handleAuth() {
         const usernameInput = document.getElementById('auth-username').value;
         const passwordInput = document.getElementById('auth-password').value;
@@ -304,6 +344,10 @@
             const data = await response.json();
             if (data.success) {
                 currentUser = data.user;
+                
+                // 🔥 СОХРАНЯЕМ СЕССИЮ: Записываем юзера в localStorage в виде JSON-строки
+                localStorage.setItem('verry_user', JSON.stringify(currentUser));
+                
                 updateUI();
             } else { alert('Ошибка: ' + (data.error || 'Ошибка входа')); }
         } catch (error) { alert('Нет ответа от сервера!'); }
@@ -324,7 +368,13 @@
         }
     }
 
-    function logout() { currentUser = null; updateUI(); }
+    // Выход из аккаунта (Очищаем память браузера)
+    function logout() {
+        currentUser = null;
+        localStorage.removeItem('verry_user'); // Удаляем сохраненную сессию
+        updateUI();
+    }
+
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
@@ -344,6 +394,17 @@
         } catch (e) {}
     }, 1000);
 
+    // 🔥 ПРОВЕРКА СЕССИИ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+    function checkSavedSession() {
+        const savedUser = localStorage.getItem('verry_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser); // Превращаем сохраненную строку обратно в объект
+            updateUI();
+        }
+    }
+
+    // Точка входа скрипта
+    checkSavedSession();
     loadProducts();
     </script>
 </body>
