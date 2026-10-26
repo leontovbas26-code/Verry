@@ -29,7 +29,6 @@
             .header-container { flex-direction: row; }
         }
         
-        /* Блок логотипа без лишнего текста */
         .logo-block { display: flex; align-items: center; }
         .logo-large { width: 64px; height: 64px; object-fit: contain; }
         
@@ -55,7 +54,6 @@
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
-        /* Изящная золотая переливающаяся обводка строго 2px */
         .product-card {
             background-color: #0d0d0d;
             border-radius: 16px;
@@ -139,8 +137,7 @@
     <header>
         <div class="header-container">
             <div class="logo-block">
-                <!-- Твой крупный зашифрованный золотой логотип -->
-                <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" class="logo-large">
+                <img src="https://githubusercontent.com" class="logo-large">
             </div>
             <nav>
                 <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
@@ -153,29 +150,9 @@
     <main>
         <!-- СТРАНИЦА: КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
-            <div class="grid">
-                <!-- Товар 1 -->
-                <div class="product-card">
-                    <div>
-                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                        <h3>Название товара</h3>
-                    </div>
-                    <div class="card-bottom">
-                        <span class="price">990 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
-                <!-- Товар 2 -->
-                <div class="product-card">
-                    <div>
-                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
-                        <h3>Название товара 2</h3>
-                    </div>
-                    <div class="card-bottom">
-                        <span class="price">1 490 ₽</span>
-                        <button class="buy-btn">Купить</button>
-                    </div>
-                </div>
+            <!-- Сюда JS-скрипт будет сам загружать товары из базы данных -->
+            <div class="grid" id="products-grid">
+                <p style="color: #9ca3af; grid-column: 1/-1; text-align: center;">Загрузка товаров с сервера...</p>
             </div>
         </div>
 
@@ -197,6 +174,7 @@
     </main>
 
     <script>
+    // Функция переключения вкладок
     function showPage(pageId) {
         document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
         document.getElementById('page-' + pageId).classList.remove('hidden');
@@ -204,6 +182,44 @@
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
         document.getElementById('nav-' + pageId).classList.add('active');
     }
+
+    // Главная функция: запрашиваем товары с твоего сервера на ПК
+    async function loadProducts() {
+        const grid = document.getElementById('products-grid');
+        try {
+            // Стучимся на твой локальный сервер Node.js
+            const response = await fetch('http://localhost:3000/api/products');
+            const products = await response.json();
+            
+            // Очищаем надпись "Загрузка..."
+            grid.innerHTML = '';
+            
+            // Перебираем товары из базы данных и генерируем HTML
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <h3>${product.name}</h3>
+                        <p style="font-size: 11px; color: #4b5563; margin-top: 4px;">На складе: ${product.stock} шт.</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price">${product.price} ₽</span>
+                        <button class="buy-btn">Купить</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+        } catch (error) {
+            console.error('Ошибка:', error);
+            grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">❌ Ошибка: Сервер на ПК не запущен или недоступен</p>';
+        }
+    }
+
+    // Запускаем загрузку товаров при открытии сайта
+    loadProducts();
     </script>
 </body>
 </html>
