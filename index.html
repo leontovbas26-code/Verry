@@ -269,9 +269,13 @@
         updateUI();
     }
 
-    setInterval(async () => {
+        setInterval(async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/ping', { method: 'POST' });
+            const res = await fetch('http://localhost:3000/api/ping', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser ? currentUser.username : null })
+            });
             const data = await res.json();
             if (data.success) {
                 document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
