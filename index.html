@@ -135,7 +135,7 @@
         @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .toast.hide { animation: slideOut 0.3s ease forwards; }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
-        .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; width: 100%; animation: progress 3s linear forwards; }
+        .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; width: 100%; animation: progress 2s linear forwards; }
         @keyframes progress { from { width: 100%; } to { width: 0%; } }
     </style>
 </head>
@@ -246,10 +246,10 @@
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.style.borderColor = color;
-        toast.innerHTML = `<span>${message}</span><div class="toast-progress" style="background: linear-gradient(90deg, #000, ${color});"></div>`;
+        toast.innerHTML = `<span>${message}</span><div class="toast-progress" style="background: ${color};"></div>`;
         container.appendChild(toast);
-        setTimeout(() => { toast.classList.add('hide'); }, 2700);
-        setTimeout(() => { toast.remove(); }, 3000);
+        setTimeout(() => { toast.classList.add('hide'); }, 1700);
+        setTimeout(() => { toast.remove(); }, 2000);
     }
 
     // Мгновенная навигация без перезагрузок
