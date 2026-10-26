@@ -260,7 +260,7 @@
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
-            const response = await fetch('https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/products');
+            const response = await fetch('https://verry-server.onrender.com/api/products');
             const products = await response.json();
             grid.innerHTML = '';
             products.forEach(product => {
@@ -298,7 +298,7 @@
             return;
         }
         try {
-            const response = await fetch(`https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/cart/${currentUser.username}`);
+            const response = await fetch(`https://verry-server.onrender.com/api/cart/${currentUser.username}`);
             const cartItems = await response.json();
             if (cartItems.length === 0) {
                 listContainer.innerHTML = '<p style="color: #6b7280; text-align: center; width: 100%; padding: 20px;">У вас пока нет покупок. Загляните в каталог! 😉</p>';
@@ -320,7 +320,7 @@
     async function buyProduct(productId) {
         if (!currentUser) return showToast('Ошибка: Сначала войдите в Личный кабинет!', '#ef4444');
         try {
-            const response = await fetch('https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/buy', {
+            const response = await fetch('https://verry-server.onrender.com/api/buy', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: currentUser.username, productId })
@@ -341,7 +341,7 @@
         const codeInput = document.getElementById('promo-input').value;
         if (!codeInput) return;
         try {
-            const response = await fetch('https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/activate-promo', {
+            const response = await fetch('https://verry-server.onrender.com/api/activate-promo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: currentUser.username, code: codeInput })
@@ -361,7 +361,7 @@
     async function adminRestockProducts() {
         if (!currentUser || currentUser.role !== 'admin') return;
         try {
-            const response = await fetch('https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/admin/restock', {
+            const response = await fetch('https://verry-server.onrender.com/api/admin/restock', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: currentUser.username })
@@ -377,7 +377,7 @@
     async function handleAuth() {
         const usernameInput = document.getElementById('auth-username').value;
         const passwordInput = document.getElementById('auth-password').value;
-        const url = isLoginMode ? 'https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/login' : 'https://557a169cf852143a-77-35-6-214.serveousercontent.com/api/register';
+        const url = isLoginMode ? 'https://verry-server.onrender.com/api/login' : 'https://verry-server.onrender.com/api/register';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -419,7 +419,7 @@
     // Реактивный онлайн
     setInterval(async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/ping', { 
+            const res = await fetch('https://verry-server.onrender.com/api/ping', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: currentUser ? currentUser.username : null })
