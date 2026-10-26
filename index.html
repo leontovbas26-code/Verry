@@ -24,10 +24,19 @@
         .logo-large { width: 128px; height: 128px; object-fit: contain; }
         
         nav { display: flex; gap: 24px; font-size: 14px; }
-        nav button {
-            background: none; border: none; color: #9ca3af;
-            cursor: pointer; padding-bottom: 2px; transition: color 0.2s; font-size: 14px;
+        .nav-link {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding-bottom: 2px;
+            transition: color 0.2s;
+            font-size: 14px;
+            text-decoration: none; /* Убирает стандартное подчёркивание ссылок */
         }
+.nav-link:hover, .nav-link.active { color: #fbbf24; }
+.nav-link.active { border-bottom: 2px solid #fbbf24; font-weight: bold; }
+
         nav button:hover, nav button.active { color: #fbbf24; }
         nav button.active { border-bottom: 2px solid #fbbf24; font-weight: bold; }
 
@@ -143,96 +152,27 @@
 
     <div id="toast-container"></div>
 
-    <header>
-        <div class="header-container">
-            <div class="logo-block">
-                <img src="IMG_2386.png" class="logo-large">
-            </div>
-            <nav>
-                <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
-                <button onclick="showPage('cabinet')" id="nav-cabinet">Кабинет</button>
-                <button onclick="showPage('admin')" id="nav-admin" class="hidden">Админка 👑</button>
-                <button onclick="showPage('cart')" id="nav-cart">Корзина</button>
-            </nav>
+<header>
+    <div class="header-container">
+        <div class="logo-block">
+            <img src="IMG_2386.png" class="logo-large">
         </div>
-    </header>
+        
+        <!-- Вот сюда, внутри <header>, вместо старых кнопок мы ставим новые ссылки: -->
+        <nav>
+            <a href="/Verry/" id="nav-catalog" class="nav-link active">Каталог</a>
+            <a href="/Verry/cabinet/" id="nav-cabinet" class="nav-link">Кабинет</a>
+            <a href="/Verry/admin/" id="nav-admin" class="nav-link hidden">Админка 👑</a>
+            <a href="/Verry/cart/" id="nav-cart" class="nav-link">Корзина</a>
+        </nav>
+
+    </div>
+</header>
     <main>
         <!-- КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
             <div class="grid" id="products-grid">
                 <p style="color: #9ca3af; grid-column: 1/-1; text-align: center;">Загрузка товаров с сервера...</p>
-            </div>
-        </div>
-
-        <!-- КАБИНЕТ -->
-        <div id="page-cabinet" class="page-section hidden">
-            <div id="auth-form-block" class="info-box">
-                <h2 id="auth-title" style="color: #fbbf24; margin-bottom: 20px; font-size: 24px;">Вход в аккаунт</h2>
-                <div class="form-group">
-                    <label>Имя пользователя</label>
-                    <input type="text" id="auth-username" class="form-input" placeholder="Введите никнейм">
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="auth-password" class="form-input" placeholder="Введите пароль">
-                </div>
-                <button onclick="handleAuth()" id="auth-submit-btn" class="submit-btn">Войти</button>
-                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="toggle-auth">Нет аккаунта? Зарегистрироваться</button>
-            </div>
-
-            <div id="profile-block" class="info-box hidden" style="max-width: 500px;">
-                <h2 style="color: #fbbf24; font-size: 24px; margin-bottom: 8px;">Личный кабинет</h2>
-                <p id="profile-name" style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">Пользователь: </p>
-                
-                <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #111827; margin-bottom: 16px;">
-                    <p style="color: #9ca3af; font-size: 14px;">Ваш баланс</p>
-                    <p id="profile-balance" style="font-size: 28px; font-weight: black; color: #fbbf24; margin-top: 4px;">0 ₽</p>
-                </div>
-
-                <div style="background-color: #0a0a0a; border: 1px solid #1f2937; padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: left;">
-                    <label style="font-size: 12px; color: #9ca3af; display: block; margin-bottom: 6px;">Активация промокода</label>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="text" id="promo-input" class="form-input" placeholder="Например: LEON" style="text-transform: uppercase;">
-                        <button onclick="activatePromo()" class="buy-btn" style="padding: 0 16px; height: 38px; border-radius: 8px;">ОК</button>
-                    </div>
-                </div>
-
-                <button onclick="logout()" class="submit-btn" style="background-color: #ef4444; color: white; padding: 8px;">Выйти из аккаунта</button>
-            </div>
-        </div>
-
-        <!-- АДМИНКА -->
-        <div id="page-admin" class="page-section hidden">
-            <div class="info-box" style="max-width: 600px;">
-                <h2 style="color: #fbbf24; font-size: 26px; margin-bottom: 20px;">Панель администратора VERRY</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                    <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #1f2937;">
-                        <p style="color: #9ca3af; font-size: 12px;">Пользователей в базе</p>
-                        <p style="font-size: 24px; font-weight: bold; color: white; margin-top: 4px;">Защищено</p>
-                    </div>
-                    <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #1f2937;">
-                        <p style="color: #9ca3af; font-size: 12px;">Живой онлайн сайта</p>
-                        <p id="admin-online-counter" style="font-size: 24px; font-weight: bold; color: #fbbf24; margin-top: 4px;">1 чел.</p>
-                    </div>
-                </div>
-
-                <div style="background-color: #0a0a0a; border: 1px dashed #fbbf24; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                    <p style="font-size: 14px; color: #e5e7eb; margin-bottom: 12px; font-weight: 600;">Управление логистикой склада</p>
-                    <button onclick="adminRestockProducts()" class="submit-btn" style="margin-top: 0; background: linear-gradient(135deg, #b45309, #fbbf24); color: black;">
-                        🚚 Оформить новый завоз (Пополнить склад)
-                    </button>
-                </div>
-                <p style="color: #4b5563; font-size: 12px;">Управление базой данных подключено локально через Node.js</p>
-            </div>
-        </div>
-
-        <!-- КОРЗИНА -->
-        <div id="page-cart" class="page-section hidden">
-            <div class="info-box" style="max-width: 800px; text-align: left;">
-                <h2 style="color: #fbbf24; font-size: 24px; margin-bottom: 16px; border-bottom: 1px solid #1f2937; padding-bottom: 10px;">🎒 Ваши купленные товары</h2>
-                <div id="cart-items-list" class="grid" style="grid-template-columns: repeat(1, 1fr); gap: 10px;">
-                    <p style="color: #9ca3af; text-align: center; padding: 20px;">Для просмотра покупок войдите в личный кабинет.</p>
-                </div>
             </div>
         </div>
     </main>
@@ -250,22 +190,6 @@
         container.appendChild(toast);
         setTimeout(() => { toast.classList.add('hide'); }, 1900);
         setTimeout(() => { toast.remove(); }, 2000);
-    }
-
-    // Мгновенная навигация без перезагрузок
-    function showPage(pageId) {
-        document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
-        document.getElementById('page-' + pageId).classList.remove('hidden');
-        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
-        if (pageId === 'cart') loadCart();
-    }
-
-    function toggleAuthMode() {
-        isLoginMode = !isLoginMode;
-        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
-        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
-        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
     }
     </script>
     <script>
@@ -303,32 +227,6 @@
         }
     }
 
-    // Загрузка Корзины
-    async function loadCart() {
-        const listContainer = document.getElementById('cart-items-list');
-        if (!currentUser) {
-            listContainer.innerHTML = '<p style="color: #9ca3af; text-align: center; width: 100%; padding: 20px;">❌ Для просмотра покупок войдите в личный кабинет.</p>';
-            return;
-        }
-        try {
-            const response = await fetch(`https://verry-server.onrender.com/api/cart/${currentUser.username}`);
-            const cartItems = await response.json();
-            if (cartItems.length === 0) {
-                listContainer.innerHTML = '<p style="color: #6b7280; text-align: center; width: 100%; padding: 20px;">У вас пока нет покупок. Загляните в каталог! 😉</p>';
-                return;
-            }
-            listContainer.innerHTML = '';
-            cartItems.forEach(item => {
-                const itemRow = document.createElement('div');
-                itemRow.style.cssText = "display: flex; justify-content: space-between; align-items: center; background-color: #141414; padding: 12px 16px; border-radius: 8px; border: 1px solid #1f2937;";
-                itemRow.innerHTML = `<div><p style="font-weight: bold; color: #e5e7eb; font-size: 14px;">${item.name}</p><p style="font-size: 11px; color: #6b7280; margin-top: 2px;">Категория: ${item.category}</p></div><span style="color: #fbbf24; font-weight: bold; font-size: 15px;">${item.price} ₽</span>`;
-                listContainer.appendChild(itemRow);
-            });
-        } catch (e) {
-            listContainer.innerHTML = '<p style="color: #ef4444; text-align: center; width: 100%; padding: 20px;">Ошибка связи с сервером при загрузке списка покупок.</p>';
-        }
-    }
-
     // Списание баланса и резерв на сервере
     async function buyProduct(productId) {
         if (!currentUser) return showToast('Ошибка: Сначала войдите в Личный кабинет!', '#ef4444');
@@ -347,64 +245,6 @@
                 loadProducts();
             } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
         } catch (e) { showToast('Нет связи с сервером.', '#ef4444'); }
-    }
-
-    // Активация промокодов в базе
-    async function activatePromo() {
-        const codeInput = document.getElementById('promo-input').value;
-        if (!codeInput) return;
-        try {
-            const response = await fetch('https://verry-server.onrender.com/api/activate-promo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: currentUser.username, code: codeInput })
-            });
-            const data = await response.json();
-            if (data.success) {
-                showToast(`🔥 Промокод активирован! Начислены бонусы.`, '#fbbf24');
-                currentUser.balance = data.newBalance;
-                localStorage.setItem('verry_user', JSON.stringify(currentUser));
-                updateUI();
-                document.getElementById('promo-input').value = '';
-            } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
-        } catch (e) { showToast('Сервер недоступен.', '#ef4444'); }
-    }
-
-    // Завоз логистики
-    async function adminRestockProducts() {
-        if (!currentUser || currentUser.role !== 'admin') return;
-        try {
-            const response = await fetch('https://verry-server.onrender.com/api/admin/restock', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: currentUser.username })
-            });
-            const data = await response.json();
-            if (data.success) {
-                showToast('🚚 Склад успешно пополнен! Новый завоз оформлен.', '#fbbf24');
-                loadProducts();
-            } else { showToast('Ошибка завоза: ' + data.error, '#ef4444'); }
-        } catch (e) { showToast('Нет связи с сервером.', '#ef4444'); }
-    }
-
-    async function handleAuth() {
-        const usernameInput = document.getElementById('auth-username').value;
-        const passwordInput = document.getElementById('auth-password').value;
-        const url = isLoginMode ? 'https://verry-server.onrender.com/api/login' : 'https://verry-server.onrender.com/api/register';
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: usernameInput, password: passwordInput })
-            });
-            const data = await response.json();
-            if (data.success) {
-                currentUser = data.user;
-                localStorage.setItem('verry_user', JSON.stringify(currentUser));
-                updateUI();
-                showToast(`Добро пожаловать, ${currentUser.username}! 👋`, '#fbbf24');
-            } else { showToast('Ошибка: ' + (data.error || 'Ошибка входа'), '#ef4444'); }
-        } catch (error) { showToast('Нет ответа от сервера!', '#ef4444'); }
     }
 
     function updateUI() {
