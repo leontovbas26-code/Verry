@@ -9,21 +9,12 @@
         body { background-color: #000000; color: #f3f4f6; font-family: sans-serif; }
         
         header {
-            padding: 16px 24px;
-            border-bottom: 1px solid #111827;
-            background-color: #000000;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+            padding: 16px 24px; border-bottom: 1px solid #111827;
+            background-color: #000000; position: sticky; top: 0; z-index: 50;
         }
         .header-container {
-            max-width: 1152px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
+            max-width: 1152px; margin: 0 auto; display: flex;
+            flex-direction: column; justify-content: space-between; align-items: center; gap: 16px;
         }
         @media (min-width: 768px) { .header-container { flex-direction: row; } }
         
@@ -72,8 +63,9 @@
         
         .buy-btn {
             background-color: #fbbf24; color: #000000; font-size: 12px; font-weight: bold;
-            padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
+            padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; transition: transform 0.1s;
         }
+        .buy-btn:active { transform: scale(0.95); }
 
         .page-section { width: 100%; }
         .hidden { display: none !important; }
@@ -97,7 +89,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="header-container">
             <div class="logo-block">
@@ -119,9 +110,9 @@
             </div>
         </div>
 
-        <!-- КАБИНЕТ (Авторизация / Профиль) -->
+        <!-- КАБИНЕТ -->
         <div id="page-cabinet" class="page-section hidden">
-            <!-- Блок формы входа/регистрации -->
+            <!-- Вход -->
             <div id="auth-form-block" class="info-box">
                 <h2 id="auth-title" style="color: #fbbf24; margin-bottom: 20px; font-size: 24px;">Вход в аккаунт</h2>
                 <div class="form-group">
@@ -136,19 +127,30 @@
                 <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="toggle-auth">Нет аккаунта? Зарегистрироваться</button>
             </div>
 
-            <!-- Блок профиля -->
-            <div id="profile-block" class="info-box hidden">
+            <!-- Профиль -->
+            <div id="profile-block" class="info-box hidden" style="max-width: 500px;">
                 <h2 style="color: #fbbf24; font-size: 24px; margin-bottom: 8px;">Личный кабинет</h2>
                 <p id="profile-name" style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">Пользователь: </p>
-                <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #111827; margin-bottom: 20px;">
+                
+                <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #111827; margin-bottom: 16px;">
                     <p style="color: #9ca3af; font-size: 14px;">Ваш баланс</p>
                     <p id="profile-balance" style="font-size: 28px; font-weight: black; color: #fbbf24; margin-top: 4px;">0 ₽</p>
                 </div>
-                <button onclick="logout()" class="submit-btn" style="background-color: #ef4444; color: white;">Выйти из аккаунта</button>
+
+                <!-- Блок ввода промокода -->
+                <div style="background-color: #0a0a0a; border: 1px solid #1f2937; padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: left;">
+                    <label style="font-size: 12px; color: #9ca3af; display: block; margin-bottom: 6px;">Активация промокода</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="promo-input" class="form-input" placeholder="Например: LEON" style="text-transform: uppercase;">
+                        <button onclick="activatePromo()" class="buy-btn" style="padding: 0 16px; height: 38px; border-radius: 8px;">ОК</button>
+                    </div>
+                </div>
+
+                <button onclick="logout()" class="submit-btn" style="background-color: #ef4444; color: white; padding: 8px;">Выйти из аккаунта</button>
             </div>
         </div>
 
-        <!-- АДМИН ПАНЕЛЬ -->
+        <!-- АДМИНКА -->
         <div id="page-admin" class="page-section hidden">
             <div class="info-box" style="max-width: 600px;">
                 <h2 style="color: #fbbf24; font-size: 26px; margin-bottom: 20px;">Панель администратора VERRY</h2>
@@ -181,13 +183,11 @@
     function showPage(pageId) {
         document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
         document.getElementById('page-' + pageId).classList.remove('hidden');
-
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        if(document.getElementById('nav-' + pageId)) {
-            document.getElementById('nav-' + pageId).classList.add('active');
-        }
+        if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
     }
 
+    // Загрузка товаров
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
@@ -205,29 +205,73 @@
                     </div>
                     <div class="card-bottom">
                         <span class="price">${product.price} ₽</span>
-                        <button class="buy-btn">Купить</button>
+                        <button onclick="buyProduct(${product.id})" class="buy-btn">Купить</button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         } catch (error) {
-            // Твоё фирменное оформление офлайна: пунктир 2px, золотой и серый текст с большой буквы
             grid.innerHTML = `
                 <div style="grid-column: 1/-1; margin: 20px auto; max-width: 500px; padding: 24px; border: 2px dashed #fbbf24; border-radius: 16px; background-color: #0d0d0d; text-align: center; line-height: 1.6; font-size: 15px;">
-                    <span style="color: #fbbf24; font-weight: 600;">Наш сервер находиться в режиме офлайн и вы можете просмотреть только свой локальный профиль и корзину </span>
+                    <span style="color: #fbbf24; font-weight: 600;">Наш server находиться в режиме офлайн и вы можете просмотреть только свой локальный профиль и корзину </span>
                     <span style="color: #9ca3af; display: block; margin-top: 8px; font-size: 13px;">Извините за неудобства</span>
                 </div>
             `;
         }
     }
 
-    function toggleAuthMode() {
-        isLoginMode = !isLoginMode;
-        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
-        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
-        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+    // Логика покупки
+    async function buyProduct(productId) {
+        if (!currentUser) return alert('Ошибка: Для покупки сначала войдите в Личный кабинет!');
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/buy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser.username, productId })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('🎉 Успешная покупка! Деньги списаны, товар зарезервирован.');
+                currentUser.balance = data.newBalance;
+                updateUI();
+                loadProducts();
+            } else {
+                alert('Ошибка покупки: ' + data.error);
+            }
+        } catch (e) {
+            alert('Нет связи с сервером для совершения покупки.');
+        }
     }
 
+    // Активация промокода
+    async function activatePromo() {
+        const codeInput = document.getElementById('promo-input').value;
+        if (!codeInput) return;
+
+        try {
+            const response = await fetch('http://localhost:3000/api/activate-promo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser.username, code: codeInput })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert(`🔥 Промокод активирован! Вам начислено +${data.reward} ₽`);
+                currentUser.balance = data.newBalance;
+                updateUI();
+                document.getElementById('promo-input').value = '';
+            } else {
+                alert('Ошибка: ' + data.error);
+            }
+        } catch (e) {
+            alert('Сервер недоступен для активации промокода.');
+        }
+    }
+
+    // Авторизация
     async function handleAuth() {
         const usernameInput = document.getElementById('auth-username').value;
         const passwordInput = document.getElementById('auth-password').value;
@@ -245,7 +289,7 @@
                 currentUser = data.user;
                 updateUI();
             } else {
-                alert('Ошибка: ' + (data.error || 'Не удалось выполнить действие'));
+                alert('Ошибка: ' + (data.error || 'Действие отклонено'));
             }
         } catch (error) {
             alert('Нет ответа от сервера на ПК!');
@@ -258,10 +302,7 @@
             document.getElementById('profile-block').classList.remove('hidden');
             document.getElementById('profile-name').innerText = 'Пользователь: ' + currentUser.username;
             document.getElementById('profile-balance').innerText = currentUser.balance + ' ₽';
-            
-            if (currentUser.role === 'admin') {
-                document.getElementById('nav-admin').classList.remove('hidden');
-            }
+            if (currentUser.role === 'admin') document.getElementById('nav-admin').classList.remove('hidden');
         } else {
             document.getElementById('auth-form-block').classList.remove('hidden');
             document.getElementById('profile-block').classList.add('hidden');
@@ -275,7 +316,14 @@
         updateUI();
     }
 
-    // Реальный пинг сервера без рандомных чисел
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
+        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
+        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+    }
+
+    // Реактивный пинг раз в секунду
     setInterval(async () => {
         try {
             const res = await fetch('http://localhost:3000/api/ping', { 
@@ -294,3 +342,4 @@
     </script>
 </body>
 </html>
+
