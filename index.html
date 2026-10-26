@@ -210,7 +210,7 @@
             </div>
         </div>
 
-        <!-- АДМИНКА -->
+                <!-- АДМИН ПАНЕЛЬ -->
         <div id="page-admin" class="page-section hidden">
             <div class="info-box" style="max-width: 600px;">
                 <h2 style="color: #fbbf24; font-size: 26px; margin-bottom: 20px;">Панель администратора VERRY</h2>
@@ -224,7 +224,16 @@
                         <p id="admin-online-counter" style="font-size: 24px; font-weight: bold; color: #fbbf24; margin-top: 4px;">1 чел.</p>
                     </div>
                 </div>
-                <p style="color: #4b5563; font-size: 12px;">Управление базой данных подключено локально через Node.js</p>
+
+                <!-- КНОПКА UPGRADE ДЛЯ ЗАВОЗА ТОВАРОВ -->
+                <div style="background-color: #0a0a0a; border: 1px dashed #fbbf24; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <p style="font-size: 14px; color: #e5e7eb; margin-bottom: 12px; font-weight: 600;">Управление логистикой склада</p>
+                    <button onclick="adminRestockProducts()" class="submit-btn" style="margin-top: 0; background: linear-gradient(135deg, #b45309, #fbbf24); color: black;">
+                        🚚 Оформить новый завоз (Пополнить склад)
+                    </button>
+                </div>
+
+                <p style="color: #4b5563; font-size: 12px;">Управление базой данных подключено локально через сервер</p>
             </div>
         </div>
 
