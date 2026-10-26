@@ -13,7 +13,7 @@
             background-color: #000000; position: sticky; top: 0; z-index: 50;
         }
         .header-container {
-            max-width: 1152px; margin: 0 auto; display: flex;
+            max-width: 1200px; margin: 0 auto; display: flex;
             flex-direction: column; justify-content: space-between; align-items: center; gap: 16px;
         }
         @media (min-width: 768px) { .header-container { flex-direction: row; } }
@@ -29,20 +29,32 @@
         nav button:hover, nav button.active { color: #fbbf24; }
         nav button.active { border-bottom: 2px solid #fbbf24; font-weight: bold; }
 
-        main { max-width: 1152px; margin: 0 auto; padding: 32px 12px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
-        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        main { max-width: 1200px; margin: 0 auto; padding: 16px 8px; }
+        
+        /* Плотная маркетплейс-сетка карточек */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+        }
+        @media (min-width: 640px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 14px; } }
 
+        /* Вертикальные прямоугольные карточки */
         .product-card {
-            background-color: #0d0d0d; border-radius: 16px; padding: 12px;
+            background-color: #0d0d0d; border-radius: 12px; padding: 10px;
             display: flex; flex-direction: column; justify-content: space-between;
             position: relative; border: 2px solid transparent; background-clip: padding-box;
+            aspect-ratio: 1 / 1.6; /* Фиксированное вертикальное соотношение сторон */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), z-index 0s;
+            overflow: hidden;
         }
         .product-card::after {
             content: ''; position: absolute; top: -2px; bottom: -2px; left: -2px; right: -2px;
             background: linear-gradient(135deg, #fbbf24, #b45309, #d97706, #fbbf24);
-            background-size: 300% 300%; border-radius: 16px; z-index: -1; animation: goldShimmer 4s ease infinite;
+            background-size: 300% 300%; border-radius: 12px; z-index: -1; animation: goldShimmer 4s ease infinite;
+            opacity: 0.7;
         }
         @keyframes goldShimmer {
             0% { background-position: 0% 50%; }
@@ -50,20 +62,40 @@
             100% { background-position: 0% 50%; }
         }
         
-        .img-placeholder {
-            width: 100%; height: 112px; background-color: #141414; border-radius: 12px;
-            margin-bottom: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 12px; color: #4b5563; border: 1px solid #111827;
+        /* Крутой интерактив при долгом наведении */
+        .product-card:hover {
+            transform: scale(1.08);
+            z-index: 30;
+            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
         }
-        @media (min-width: 768px) { .img-placeholder { height: 160px; } }
         
-        h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; }
-        .card-bottom { margin-top: 12px; padding-top: 8px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
-        .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
+        .img-placeholder {
+            width: 100%; height: 50%; background-color: #141414; border-radius: 8px;
+            margin-bottom: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 11px; color: #4b5563; border: 1px solid #111827; transition: height 0.3s;
+        }
+        
+        h3 { font-size: 13px; color: #e5e7eb; font-weight: 600; line-height: 1.3; height: 34px; overflow: hidden; }
+        
+        /* Скрытый блок описания, который плавно проявляется */
+        .product-desc {
+            font-size: 11px; color: #9ca3af; margin-top: 6px;
+            opacity: 0; max-height: 0; overflow: hidden;
+            transition: opacity 0.3s ease 0.2s, max-height 0.3s ease; /* Задержка проявления */
+        }
+        .product-card:hover .product-desc {
+            opacity: 1; max-height: 60px;
+        }
+        .product-card:hover .img-placeholder {
+            height: 35%; /* Чуть сжимаем картинку, чтобы влезло описание */
+        }
+        
+        .card-bottom { margin-top: auto; padding-top: 6px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
+        .price { font-size: 15px; font-weight: bold; color: #fbbf24; }
         
         .buy-btn {
-            background-color: #fbbf24; color: #000000; font-size: 12px; font-weight: bold;
-            padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; transition: transform 0.1s;
+            background-color: #fbbf24; color: #000000; font-size: 11px; font-weight: bold;
+            padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; transition: transform 0.1s;
         }
         .buy-btn:active { transform: scale(0.95); }
 
@@ -72,7 +104,7 @@
         
         .info-box {
             border: 1px solid #111827; background-color: #0d0d0d; border-radius: 16px;
-            padding: 24px; max-width: 448px; margin: 0 auto; text-align: center;
+            padding: 24px; max-width: 448px; margin: 40px auto; text-align: center;
         }
         .form-group { margin-bottom: 16px; text-align: left; }
         .form-group label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
@@ -137,7 +169,6 @@
                     <p id="profile-balance" style="font-size: 28px; font-weight: black; color: #fbbf24; margin-top: 4px;">0 ₽</p>
                 </div>
 
-                <!-- Блок ввода промокода -->
                 <div style="background-color: #0a0a0a; border: 1px solid #1f2937; padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: left;">
                     <label style="font-size: 12px; color: #9ca3af; display: block; margin-bottom: 6px;">Активация промокода</label>
                     <div style="display: flex; gap: 8px;">
@@ -187,21 +218,23 @@
         if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
     }
 
-    // Загрузка товаров
+    // Загрузка товаров с поддержкой категорий и описаний
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
             const response = await fetch('http://localhost:3000/api/products');
             const products = await response.json();
             grid.innerHTML = '';
+            
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div>
-                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <div class="img-placeholder"><span>[ ${product.category || 'Товар'} ]</span></div>
                         <h3>${product.name}</h3>
-                        <p style="font-size: 11px; color: #4b5563; margin-top: 4px;">На складе: ${product.stock} шт.</p>
+                        <p style="font-size: 10px; color: #fbbf24; margin-top: 2px;">Осталось: ${product.stock} шт.</p>
+                        <div class="product-desc">${product.description || ''}</div>
                     </div>
                     <div class="card-bottom">
                         <span class="price">${product.price} ₽</span>
@@ -220,10 +253,9 @@
         }
     }
 
-    // Логика покупки
+    // Покупка
     async function buyProduct(productId) {
         if (!currentUser) return alert('Ошибка: Для покупки сначала войдите в Личный кабинет!');
-        
         try {
             const response = await fetch('http://localhost:3000/api/buy', {
                 method: 'POST',
@@ -231,25 +263,23 @@
                 body: JSON.stringify({ username: currentUser.username, productId })
             });
             const data = await response.json();
-
             if (data.success) {
-                alert('🎉 Успешная покупка! Деньги списаны, товар зарезервирован.');
+                alert('🎉 Успешная покупка!');
                 currentUser.balance = data.newBalance;
                 updateUI();
                 loadProducts();
             } else {
-                alert('Ошибка покупки: ' + data.error);
+                alert('Ошибка: ' + data.error);
             }
         } catch (e) {
-            alert('Нет связи с сервером для совершения покупки.');
+            alert('Нет связи с сервером.');
         }
     }
 
-    // Активация промокода
+    // Промокоды
     async function activatePromo() {
         const codeInput = document.getElementById('promo-input').value;
         if (!codeInput) return;
-
         try {
             const response = await fetch('http://localhost:3000/api/activate-promo', {
                 method: 'POST',
@@ -257,18 +287,15 @@
                 body: JSON.stringify({ username: currentUser.username, code: codeInput })
             });
             const data = await response.json();
-
             if (data.success) {
-                alert(`🔥 Промокод активирован! Вам начислено +${data.reward} ₽`);
+                alert(`🔥 Баланс пополнен на +${data.reward} ₽`);
                 currentUser.balance = data.newBalance;
                 updateUI();
                 document.getElementById('promo-input').value = '';
             } else {
                 alert('Ошибка: ' + data.error);
             }
-        } catch (e) {
-            alert('Сервер недоступен для активации промокода.');
-        }
+        } catch (e) { alert('Сервер недоступен.'); }
     }
 
     // Авторизация
@@ -276,7 +303,6 @@
         const usernameInput = document.getElementById('auth-username').value;
         const passwordInput = document.getElementById('auth-password').value;
         const url = isLoginMode ? 'http://localhost:3000/api/login' : 'http://localhost:3000/api/register';
-
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -284,16 +310,11 @@
                 body: JSON.stringify({ username: usernameInput, password: passwordInput })
             });
             const data = await response.json();
-
             if (data.success) {
                 currentUser = data.user;
                 updateUI();
-            } else {
-                alert('Ошибка: ' + (data.error || 'Действие отклонено'));
-            }
-        } catch (error) {
-            alert('Нет ответа от сервера на ПК!');
-        }
+            } else { alert('Ошибка: ' + (data.error || 'Ошибка входа')); }
+        } catch (error) { alert('Нет ответа от сервера!'); }
     }
 
     function updateUI() {
@@ -311,11 +332,7 @@
         }
     }
 
-    function logout() {
-        currentUser = null;
-        updateUI();
-    }
-
+    function logout() { currentUser = null; updateUI(); }
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
@@ -323,7 +340,6 @@
         document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
     }
 
-    // Реактивный пинг раз в секунду
     setInterval(async () => {
         try {
             const res = await fetch('http://localhost:3000/api/ping', { 
@@ -332,9 +348,7 @@
                 body: JSON.stringify({ username: currentUser ? currentUser.username : null })
             });
             const data = await res.json();
-            if (data.success) {
-                document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
-            }
+            if (data.success) document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
         } catch (e) {}
     }, 1000);
 
@@ -342,4 +356,3 @@
     </script>
 </body>
 </html>
-
