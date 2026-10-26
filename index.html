@@ -4,53 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry Marketplace</title>
-    <!-- Подключаем Tailwind CSS для красивых стилей -->
-    <script src="https://jsdelivr.net"></script>
-</head>
-<body class="bg-black text-[#f3f4f6] font-sans antialiased">
+    <style>
+        /* Чистые стили без интернета */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #000000; color: #f3f4f6; font-family: sans-serif; }
+        
+        header {
+            padding: 24px;
+            border-b: 1px solid #111827;
+            background-color: #000000;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-container {
+            max-w: 1152px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+        @media (min-width: 768px) {
+            .header-container { flex-direction: row; }
+        }
+        h1 { color: #fbbf24; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; font-size: 28px; }
+        
+        nav { display: flex; gap: 24px; font-size: 14px; }
+        nav button {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding-bottom: 2px;
+            transition: color 0.2s;
+            font-size: 14px;
+        }
+        nav button:hover { color: #fbbf24; }
+        nav button.active {
+            color: #fbbf24;
+            border-bottom: 2px solid #fbbf24;
+            font-weight: bold;
+        }
 
-    <!-- Шапка сайта -->
-    <header class="p-6 md:px-12 border-b border-gray-900 bg-black sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <h1 class="text-3xl font-black text-[#fbbf24] tracking-wider uppercase">Verry</h1>
-            <nav class="flex gap-6 text-sm text-gray-400">
-                <button onclick="showPage('catalog')" id="nav-catalog" class="text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold cursor-pointer">Каталог</button>
-                <button onclick="showPage('cabinet')" id="nav-cabinet" class="hover:text-[#fbbf24] transition cursor-pointer">Кабинет</button>
-                <button onclick="showPage('cart')" id="nav-cart" class="hover:text-[#fbbf24] transition cursor-pointer">Корзина</button>
+        main { max-w: 1152px; margin: 0 auto; padding: 32px 12px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .product-card {
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            background-color: #0d0d0d;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.3s;
+        }
+        .product-card:hover { border-color: #fbbf24; }
+        
+        .img-placeholder {
+            width: 100%;
+            height: 112px;
+            background-color: #141414;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #4b5563;
+            border: 1px solid #111827;
+        }
+        @media (min-width: 768px) { .img-placeholder { height: 160px; } }
+        
+        h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; }
+        @media (min-width: 768px) { h3 { font-size: 16px; } }
+        
+        .card-bottom { margin-top: 12px; padding-top: 8px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
+        .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
+        @media (min-width: 768px) { .price { font-size: 18px; } }
+        
+        .buy-btn {
+            background-color: #fbbf24;
+            color: #000000;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .buy-btn:active { transform: scale(0.95); }
+
+        .page-section { width: 100%; }
+        .hidden { display: none !important; }
+        
+        .info-box {
+            border: 1px solid #111827;
+            background-color: #0d0d0d;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 448px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .info-box h2 { font-size: 24px; color: #fbbf24; margin-bottom: 16px; }
+        .info-box p { color: #9ca3af; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <h1>Verry</h1>
+            <nav>
+                <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
+                <button onclick="showPage('cabinet')" id="nav-cabinet">Кабинет</button>
+                <button onclick="showPage('cart')" id="nav-cart">Корзина</button>
             </nav>
         </div>
     </header>
 
-    <!-- Основной блок -->
-    <main class="max-w-6xl mx-auto px-3 md:px-6 py-8">
-        
+    <main>
         <!-- СТРАНИЦА: КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                <!-- Карточка товара 1 -->
-                <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300">
+            <div class="grid">
+                <!-- Товар 1 -->
+                <div class="product-card">
                     <div>
-                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
-                            <span>[ Картинка ]</span>
-                        </div>
-                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара</h3>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <h3>Название товара</h3>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
-                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
-                        <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    <div class="card-bottom">
+                        <span class="price">990 ₽</span>
+                        <button class="buy-btn">Купить</button>
                     </div>
                 </div>
-                <!-- Карточка товара 2 -->
-                <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300">
+                <!-- Товар 2 -->
+                <div class="product-card">
                     <div>
-                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
-                            <span>[ Картинка ]</span>
-                        </div>
-                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара 2</h3>
+                        <div class="img-placeholder"><span>[ Картинка ]</span></div>
+                        <h3>Название товара 2</h3>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
-                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">1 490 ₽</span>
-                        <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    <div class="card-bottom">
+                        <span class="price">1 490 ₽</span>
+                        <button class="buy-btn">Купить</button>
                     </div>
                 </div>
             </div>
@@ -58,42 +160,28 @@
 
         <!-- СТРАНИЦА: КАБИНЕТ -->
         <div id="page-cabinet" class="page-section hidden">
-            <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto text-center">
-                <h2 class="text-2xl font-bold text-[#fbbf24] mb-4">Личный кабинет</h2>
-                <p class="text-gray-400 text-sm">Добро пожаловать в Verry Marketplace!</p>
+            <div class="info-box">
+                <h2>Личный кабинет</h2>
+                <p>Добро пожаловать в Verry Marketplace!</p>
             </div>
         </div>
 
         <!-- СТРАНИЦА: КОРЗИНА -->
         <div id="page-cart" class="page-section hidden">
-            <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto text-center">
-                <h2 class="text-2xl font-bold text-[#fbbf24] mb-4">Ваша корзина</h2>
-                <p class="text-gray-400 text-sm">Здесь будут отображаться отложенные товары.</p>
+            <div class="info-box">
+                <h2>Ваша корзина</h2>
+                <p>Здесь будут отображаться отложенные товары.</p>
             </div>
         </div>
-
     </main>
 
-    <!-- Скрипт для мгновенного переключения страниц -->
     <script>
     function showPage(pageId) {
-        // Прячем все страницы
-        document.querySelectorAll('.page-section').forEach(page => {
-            page.classList.add('hidden');
-        });
-        // Показываем нужную страницу
+        document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
         document.getElementById('page-' + pageId).classList.remove('hidden');
 
-        // Сбрасываем стили у всех кнопок навигации
-        const navButtons = ['catalog', 'cabinet', 'cart'];
-        navButtons.forEach(id => {
-            const btn = document.getElementById('nav-' + id);
-            btn.className = "hover:text-[#fbbf24] transition cursor-pointer";
-        });
-
-        // Подсвечиваем активную кнопку золотым
-        const activeBtn = document.getElementById('nav-' + pageId);
-        activeBtn.className = "text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold cursor-pointer";
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('nav-' + pageId).classList.add('active');
     }
     </script>
 </body>
