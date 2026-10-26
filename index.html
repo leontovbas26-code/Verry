@@ -468,6 +468,29 @@
             updateUI();
         }
     }
+    
+    // Функция массового пополнения товаров для админа
+    async function adminRestockProducts() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/admin/restock', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser.username })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('🚚 Склад успешно пополнен! Новый завоз оформлен.', '#fbbf24');
+                loadProducts(); // Сразу перерисовываем каталог с новыми остатками
+            } else {
+                showToast('Ошибка завоза: ' + data.error, '#ef4444');
+            }
+        } catch (e) {
+            showToast('Нет связи с сервером для оформления завоза.', '#ef4444');
+        }
+    }
 
     checkSavedSession();
     loadProducts();
