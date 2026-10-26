@@ -244,7 +244,8 @@
                 updateUI();
                 loadProducts();
             } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
-        } catch (e) { showToast('Нет связи с сервером.', '#
+        } catch (e) { showToast('Нет связи с сервером.', '#ef4444'); }
+    }
 
     function updateUI() {
     if (currentUser) {
