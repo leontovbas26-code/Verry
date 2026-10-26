@@ -282,14 +282,21 @@
         } catch (e) {}
     }, 1000);
 
-    function checkSavedSession() {
-        const savedUser = localStorage.getItem('verry_user');
-        if (savedUser) {
+// СТАЛО:
+function checkSavedSession() {
+    const savedUser = localStorage.getItem('verry_user');
+    if (savedUser) {
+        try {
+            // Если там сохранен полноценный JSON-объект пользователя
             currentUser = JSON.parse(savedUser);
-            updateUI();
+        } catch (e) {
+            // Если там просто строка "admin" из нового кабинета
+            currentUser = { username: savedUser, role: savedUser, balance: 0 };
         }
+        updateUI();
     }
-
+}
+        
     checkSavedSession();
     loadProducts();
     </script>
