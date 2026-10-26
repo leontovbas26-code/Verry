@@ -211,7 +211,8 @@
                 grid.appendChild(card);
             });
         } catch (error) {
-            grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">❌ Ошибка соединения с сервером на ПК</p>';
+            // Твоё оригинальное легендарное сообщение при оффлайне сервера
+            grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center; font-size: 14px; padding: 20px; line-height: 1.5;">❌ Наш сервер находиться в режиме офлайн и вы можете просмотреть только свой локальный профиль и корзину извините за неудобства</p>';
         }
     }
 
@@ -269,7 +270,7 @@
         updateUI();
     }
 
-        setInterval(async () => {
+    setInterval(async () => {
         try {
             const res = await fetch('http://localhost:3000/api/ping', { 
                 method: 'POST',
