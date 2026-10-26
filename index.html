@@ -25,29 +25,18 @@
             align-items: center;
             gap: 16px;
         }
-        @media (min-width: 768px) {
-            .header-container { flex-direction: row; }
-        }
+        @media (min-width: 768px) { .header-container { flex-direction: row; } }
         
         .logo-block { display: flex; align-items: center; }
         .logo-large { width: 64px; height: 64px; object-fit: contain; }
         
         nav { display: flex; gap: 24px; font-size: 14px; }
         nav button {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            padding-bottom: 2px;
-            transition: color 0.2s;
-            font-size: 14px;
+            background: none; border: none; color: #9ca3af;
+            cursor: pointer; padding-bottom: 2px; transition: color 0.2s; font-size: 14px;
         }
-        nav button:hover { color: #fbbf24; }
-        nav button.active {
-            color: #fbbf24;
-            border-bottom: 2px solid #fbbf24;
-            font-weight: bold;
-        }
+        nav button:hover, nav button.active { color: #fbbf24; }
+        nav button.active { border-bottom: 2px solid #fbbf24; font-weight: bold; }
 
         main { max-width: 1152px; margin: 0 auto; padding: 32px 12px; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -55,25 +44,14 @@
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
         .product-card {
-            background-color: #0d0d0d;
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            border: 2px solid transparent;
-            background-clip: padding-box;
+            background-color: #0d0d0d; border-radius: 16px; padding: 12px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; border: 2px solid transparent; background-clip: padding-box;
         }
         .product-card::after {
-            content: '';
-            position: absolute;
-            top: -2px; bottom: -2px; left: -2px; right: -2px;
+            content: ''; position: absolute; top: -2px; bottom: -2px; left: -2px; right: -2px;
             background: linear-gradient(135deg, #fbbf24, #b45309, #d97706, #fbbf24);
-            background-size: 300% 300%;
-            border-radius: 16px;
-            z-index: -1;
-            animation: goldShimmer 4s ease infinite;
+            background-size: 300% 300%; border-radius: 16px; z-index: -1; animation: goldShimmer 4s ease infinite;
         }
         @keyframes goldShimmer {
             0% { background-position: 0% 50%; }
@@ -82,54 +60,40 @@
         }
         
         .img-placeholder {
-            width: 100%;
-            height: 112px;
-            background-color: #141414;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #4b5563;
-            border: 1px solid #111827;
+            width: 100%; height: 112px; background-color: #141414; border-radius: 12px;
+            margin-bottom: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; color: #4b5563; border: 1px solid #111827;
         }
         @media (min-width: 768px) { .img-placeholder { height: 160px; } }
         
         h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; }
-        @media (min-width: 768px) { h3 { font-size: 16px; } }
-        
         .card-bottom { margin-top: 12px; padding-top: 8px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
         .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
-        @media (min-width: 768px) { .price { font-size: 18px; } }
         
         .buy-btn {
-            background-color: #fbbf24;
-            color: #000000;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.1s;
+            background-color: #fbbf24; color: #000000; font-size: 12px; font-weight: bold;
+            padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
         }
-        .buy-btn:active { transform: scale(0.95); }
 
         .page-section { width: 100%; }
         .hidden { display: none !important; }
         
         .info-box {
-            border: 1px solid #111827;
-            background-color: #0d0d0d;
-            border-radius: 16px;
-            padding: 24px;
-            max-width: 448px;
-            margin: 0 auto;
-            text-align: center;
+            border: 1px solid #111827; background-color: #0d0d0d; border-radius: 16px;
+            padding: 24px; max-width: 448px; margin: 0 auto; text-align: center;
         }
-        .info-box h2 { font-size: 24px; color: #fbbf24; margin-bottom: 16px; }
-        .info-box p { color: #9ca3af; font-size: 14px; }
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+        .form-input {
+            width: 100%; padding: 10px; background-color: #141414; border: 1px solid #1f2937;
+            border-radius: 8px; color: white; font-size: 14px;
+        }
+        .form-input:focus { border-color: #fbbf24; outline: none; }
+        .submit-btn {
+            width: 100%; padding: 12px; background-color: #fbbf24; color: black;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        .toggle-auth { color: #fbbf24; font-size: 12px; cursor: pointer; background: none; border: none; margin-top: 12px; }
     </style>
 </head>
 <body>
@@ -142,59 +106,94 @@
             <nav>
                 <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
                 <button onclick="showPage('cabinet')" id="nav-cabinet">Кабинет</button>
+                <button onclick="showPage('admin')" id="nav-admin" class="hidden">Админка 👑</button>
                 <button onclick="showPage('cart')" id="nav-cart">Корзина</button>
             </nav>
         </div>
     </header>
-
     <main>
-        <!-- СТРАНИЦА: КАТАЛОГ -->
+        <!-- КАТАЛОГ -->
         <div id="page-catalog" class="page-section">
-            <!-- Сюда JS-скрипт будет сам загружать товары из базы данных -->
             <div class="grid" id="products-grid">
                 <p style="color: #9ca3af; grid-column: 1/-1; text-align: center;">Загрузка товаров с сервера...</p>
             </div>
         </div>
 
-        <!-- СТРАНИЦА: КАБИНЕТ -->
+        <!-- КАБИНЕТ (Авторизация / Профиль) -->
         <div id="page-cabinet" class="page-section hidden">
-            <div class="info-box">
-                <h2>Личный кабинет</h2>
-                <p>Добро пожаловать в Verry Marketplace!</p>
+            <!-- Блок формы входа/регистрации -->
+            <div id="auth-form-block" class="info-box">
+                <h2 id="auth-title" style="color: #fbbf24; margin-bottom: 20px; font-size: 24px;">Вход в аккаунт</h2>
+                <div class="form-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="auth-username" class="form-input" placeholder="Введите никнейм">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="auth-password" class="form-input" placeholder="Введите пароль">
+                </div>
+                <button onclick="handleAuth()" id="auth-submit-btn" class="submit-btn">Войти</button>
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="toggle-auth">Нет аккаунта? Зарегистрироваться</button>
+            </div>
+
+            <!-- Блок профиля (показывается после входа) -->
+            <div id="profile-block" class="info-box hidden">
+                <h2 style="color: #fbbf24; font-size: 24px; margin-bottom: 8px;">Личный кабинет</h2>
+                <p id="profile-name" style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">Пользователь: </p>
+                <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #111827; margin-bottom: 20px;">
+                    <p style="color: #9ca3af; font-size: 14px;">Ваш баланс</p>
+                    <p id="profile-balance" style="font-size: 28px; font-weight: black; color: #fbbf24; margin-top: 4px;">0 ₽</p>
+                </div>
+                <button onclick="logout()" class="submit-btn" style="background-color: #ef4444; color: white;">Выйти из аккаунта</button>
             </div>
         </div>
 
-        <!-- СТРАНИЦА: КОРЗИНА -->
+        <!-- АДМИН ПАНЕЛЬ -->
+        <div id="page-admin" class="page-section hidden">
+            <div class="info-box" style="max-width: 600px;">
+                <h2 style="color: #fbbf24; font-size: 26px; margin-bottom: 20px;">Панель администратора VERRY</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #1f2937;">
+                        <p style="color: #9ca3af; font-size: 12px;">Пользователей в базе</p>
+                        <p style="font-size: 24px; font-weight: bold; color: white; margin-top: 4px;">Защищено</p>
+                    </div>
+                    <div style="background-color: #141414; padding: 16px; border-radius: 12px; border: 1px solid #1f2937;">
+                        <p style="color: #9ca3af; font-size: 12px;">Живой онлайн сайта</p>
+                        <p id="admin-online-counter" style="font-size: 24px; font-weight: bold; color: #fbbf24; margin-top: 4px;">1 чел.</p>
+                    </div>
+                </div>
+                <p style="color: #4b5563; font-size: 12px;">Управление базой данных подключено локально через Node.js</p>
+            </div>
+        </div>
+
+        <!-- КОРЗИНА -->
         <div id="page-cart" class="page-section hidden">
             <div class="info-box">
                 <h2>Ваша корзина</h2>
-                <p>Здесь будут отображаться отложенные товары.</p>
+                <p style="color: #9ca3af; margin-top: 10px;">Здесь будут отображаться отложенные товары.</p>
             </div>
         </div>
     </main>
-
     <script>
-    // Функция переключения вкладок
+    let currentUser = null;
+    let isLoginMode = true;
+
     function showPage(pageId) {
         document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
         document.getElementById('page-' + pageId).classList.remove('hidden');
 
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('nav-' + pageId).classList.add('active');
+        if(document.getElementById('nav-' + pageId)) {
+            document.getElementById('nav-' + pageId).classList.add('active');
+        }
     }
 
-    // Главная функция: запрашиваем товары с твоего сервера на ПК
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
-            // Стучимся на твой локальный сервер Node.js
             const response = await fetch('http://localhost:3000/api/products');
             const products = await response.json();
-            
-            // Очищаем надпись "Загрузка..."
             grid.innerHTML = '';
-            
-            // Перебираем товары из базы данных и генерируем HTML
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -211,15 +210,78 @@
                 `;
                 grid.appendChild(card);
             });
-            
         } catch (error) {
-            console.error('Ошибка:', error);
-            grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">❌ Ошибка: Сервер на ПК не запущен или недоступен</p>';
+            grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">❌ Ошибка соединения с сервером на ПК</p>';
         }
     }
 
-    // Запускаем загрузку товаров при открытии сайта
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
+        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
+        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+    }
+
+    async function handleAuth() {
+        const usernameInput = document.getElementById('auth-username').value;
+        const passwordInput = document.getElementById('auth-password').value;
+        const url = isLoginMode ? 'http://localhost:3000/api/login' : 'http://localhost:3000/api/register';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: usernameInput, password: passwordInput })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                currentUser = data.user;
+                updateUI();
+            } else {
+                alert('Ошибка: ' + (data.error || 'Не удалось выполнить действие'));
+            }
+        } catch (error) {
+            alert('Нет ответа от сервера на ПК!');
+        }
+    }
+
+    function updateUI() {
+        if (currentUser) {
+            document.getElementById('auth-form-block').classList.add('hidden');
+            document.getElementById('profile-block').classList.remove('hidden');
+            document.getElementById('profile-name').innerText = 'Пользователь: ' + currentUser.username;
+            document.getElementById('profile-balance').innerText = currentUser.balance + ' ₽';
+            
+            if (currentUser.role === 'admin') {
+                document.getElementById('nav-admin').classList.remove('hidden');
+            }
+        } else {
+            document.getElementById('auth-form-block').classList.remove('hidden');
+            document.getElementById('profile-block').classList.add('hidden');
+            document.getElementById('nav-admin').classList.add('hidden');
+            showPage('catalog');
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        updateUI();
+    }
+
+    setInterval(async () => {
+        try {
+            const res = await fetch('http://localhost:3000/api/ping', { method: 'POST' });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('admin-online-counter').innerText = data.online + ' чел.';
+            }
+        } catch (e) {}
+    }, 3000);
+
     loadProducts();
     </script>
 </body>
 </html>
+
+       
