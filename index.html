@@ -40,27 +40,15 @@
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 16px; } }
 
-        /* Карточка ВСЕГДА угольно-чёрная по умолчанию */
         .product-card {
-            background-color: #0d0d0d !important; 
-            border-radius: 12px; 
-            padding: 14px;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            position: relative; 
-            min-height: 320px;
-            z-index: 1;
-            /* Стабильная золотая рамка вокруг скруглённых углов */
+            background-color: #0d0d0d !important; border-radius: 12px; padding: 14px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; min-height: 320px; z-index: 1;
             box-shadow: 0 0 0 2px #fbbf24;
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, box-shadow 0.3s ease; 
         }
-        
-        /* ПЛАВНЫЙ приглушённо-золотой фон и зум ТОЛЬКО при наведении */
         .product-card:hover {
-            background-color: #241a05 !important; /* Красивый тёмно-золотой фон */
-            transform: scale(1.05);
-            z-index: 30;
+            background-color: #241a05 !important; transform: scale(1.05); z-index: 30;
             box-shadow: 0 0 0 2px #fbbf24, 0 12px 30px rgba(251, 191, 36, 0.4);
         }
         
@@ -69,18 +57,14 @@
             margin-bottom: 8px; display: flex; align-items: center; justify-content: center;
             font-size: 11px; color: #4b5563; border: 1px solid #111827;
         }
-        
         h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
         
-        /* Описание плавно разворачивается */
         .product-desc {
             font-size: 11px; color: #9ca3af; margin-top: 6px;
             opacity: 0; max-height: 0; overflow: hidden;
             transition: opacity 0.2s ease, max-height 0.2s ease;
         }
-        .product-card:hover .product-desc {
-            opacity: 1; max-height: 100px;
-        }
+        .product-card:hover .product-desc { opacity: 1; max-height: 100px; }
         
         .card-bottom { margin-top: 12px; padding-top: 8px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
         .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
@@ -110,9 +94,62 @@
             border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
         }
         .toggle-auth { color: #fbbf24; font-size: 12px; cursor: pointer; background: none; border: none; margin-top: 12px; }
+
+        /* 🔥 СТИЛИ ДЛЯ КРАСИВЫХ TOAST-УВЕДОМЛЕНИЙ */
+        #toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background-color: #0d0d0d;
+            color: #f3f4f6;
+            border: 2px solid #1f2937;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 280px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.3s ease forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast.hide {
+            animation: slideOut 0.3s ease forwards;
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
+        }
+        /* Уменьшающаяся полоса времени */
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b45309, #fbbf24);
+            width: 100%;
+            animation: progress 3s linear forwards;
+        }
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
     </style>
 </head>
 <body>
+    <!-- Контейнер, куда JS будет спавнить уведомления -->
+    <div id="toast-container"></div>
+
     <header>
         <div class="header-container">
             <div class="logo-block">
@@ -203,18 +240,55 @@
     let currentUser = null;
     let isLoginMode = true;
 
+    // 🔥 ФУНКЦИЯ ДЛЯ КРАСИВЫХ ВСПЛЫВАЮЩИХ УВЕДОМЛЕНИЙ С ТАЮЩЕЙ ПОЛОСКОЙ
+    function showToast(message, color = '#fbbf24') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.borderColor = color;
+        
+        toast.innerHTML = `
+            <span>${message}</span>
+            <div class="toast-progress" style="background: linear-gradient(90deg, #000, ${color});"></div>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Через 2.7 секунды запускаем анимацию ухода вбок
+        setTimeout(() => {
+            toast.classList.add('hide');
+        }, 2700);
+        
+        // Через 3 секунды полностью удаляем из HTML-кода страницы
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    // Переключение главных страниц (Каталог, Кабинет, Корзина, Админка)
     function showPage(pageId) {
         document.querySelectorAll('.page-section').forEach(page => page.classList.add('hidden'));
         document.getElementById('page-' + pageId).classList.remove('hidden');
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
+        if(document.getElementById('nav-' + pageId)) {
+            document.getElementById('nav-' + pageId).classList.add('active');
+        }
         
+        // Если перешли в корзину — обновляем список покупок
         if (pageId === 'cart') {
             loadCart();
         }
     }
 
-    // Загрузка каталога
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
+        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
+        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+    }
+    </script>
+    <script>
+    // Загрузка 100 товаров в красивую сетку
     async function loadProducts() {
         const grid = document.getElementById('products-grid');
         try {
@@ -248,23 +322,20 @@
         }
     }
 
-    // Загрузка Корзины с бэкенда
+    // Загрузка Корзины
     async function loadCart() {
         const listContainer = document.getElementById('cart-items-list');
         if (!currentUser) {
             listContainer.innerHTML = '<p style="color: #9ca3af; text-align: center; width: 100%; padding: 20px;">❌ Для просмотра покупок войдите в личный кабинет.</p>';
             return;
         }
-
         try {
             const response = await fetch(`http://localhost:3000/api/cart/${currentUser.username}`);
             const cartItems = await response.json();
-            
             if (cartItems.length === 0) {
                 listContainer.innerHTML = '<p style="color: #6b7280; text-align: center; width: 100%; padding: 20px;">У вас пока нет покупок. Загляните в каталог! 😉</p>';
                 return;
             }
-
             listContainer.innerHTML = '';
             cartItems.forEach(item => {
                 const itemRow = document.createElement('div');
@@ -285,7 +356,7 @@
 
     // Покупка товара
     async function buyProduct(productId) {
-        if (!currentUser) return alert('Ошибка: Для покупки сначала войдите в Личный кабинет!');
+        if (!currentUser) return showToast('Ошибка: Сначала войдите в Личный кабинет!', '#ef4444');
         try {
             const response = await fetch('http://localhost:3000/api/buy', {
                 method: 'POST',
@@ -294,16 +365,13 @@
             });
             const data = await response.json();
             if (data.success) {
-                alert('🎉 Успешная покупка! Товар отправлен в вашу Корзину.');
+                showToast('🎉 Успешная покупка! Товар отправлен в Корзину.', '#fbbf24');
                 currentUser.balance = data.newBalance;
-                
-                // Перезаписываем сохраненные данные в памяти браузера, чтобы обновить баланс
                 localStorage.setItem('verry_user', JSON.stringify(currentUser));
-                
                 updateUI();
                 loadProducts();
-            } else { alert('Ошибка: ' + data.error); }
-        } catch (e) { alert('Нет связи с сервером.'); }
+            } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
+        } catch (e) { showToast('Нет связи с сервером.', '#ef4444'); }
     }
 
     // Активация промокода
@@ -318,19 +386,16 @@
             });
             const data = await response.json();
             if (data.success) {
-                alert(`🔥 Баланс пополнен на +${data.reward} ₽`);
+                showToast(`🔥 Промокод активирован! Начислены бонусы.`, '#fbbf24');
                 currentUser.balance = data.newBalance;
-                
-                // Перезаписываем обновленный баланс в память браузера
                 localStorage.setItem('verry_user', JSON.stringify(currentUser));
-                
                 updateUI();
                 document.getElementById('promo-input').value = '';
-            } else { alert('Ошибка: ' + data.error); }
-        } catch (e) { alert('Сервер недоступен.'); }
+            } else { showToast('Ошибка: ' + data.error, '#ef4444'); }
+        } catch (e) { showToast('Сервер недоступен.', '#ef4444'); }
     }
 
-    // Авторизация (Вход)
+    // Авторизация / Логин
     async function handleAuth() {
         const usernameInput = document.getElementById('auth-username').value;
         const passwordInput = document.getElementById('auth-password').value;
@@ -344,13 +409,11 @@
             const data = await response.json();
             if (data.success) {
                 currentUser = data.user;
-                
-                // 🔥 СОХРАНЯЕМ СЕССИЮ: Записываем юзера в localStorage в виде JSON-строки
                 localStorage.setItem('verry_user', JSON.stringify(currentUser));
-                
                 updateUI();
-            } else { alert('Ошибка: ' + (data.error || 'Ошибка входа')); }
-        } catch (error) { alert('Нет ответа от сервера!'); }
+                showToast(`Добро пожаловать, ${currentUser.username}! 👋`, '#fbbf24');
+            } else { showToast('Ошибка: ' + (data.error || 'Ошибка входа'), '#ef4444'); }
+        } catch (error) { showToast('Нет ответа от сервера!', '#ef4444'); }
     }
 
     function updateUI() {
@@ -368,20 +431,14 @@
         }
     }
 
-    // Выход из аккаунта (Очищаем память браузера)
     function logout() {
         currentUser = null;
-        localStorage.removeItem('verry_user'); // Удаляем сохраненную сессию
+        localStorage.removeItem('verry_user');
         updateUI();
+        showToast('Вы вышли из системы.', '#9ca3af');
     }
 
-    function toggleAuthMode() {
-        isLoginMode = !isLoginMode;
-        document.getElementById('auth-title').innerText = isLoginMode ? 'Вход в аккаунт' : 'Регистрация';
-        document.getElementById('auth-submit-btn').innerText = isLoginMode ? 'Войти' : 'Создать аккаунт';
-        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
-    }
-
+    // Реактивный пинг каждую секунду
     setInterval(async () => {
         try {
             const res = await fetch('http://localhost:3000/api/ping', { 
@@ -394,16 +451,15 @@
         } catch (e) {}
     }, 1000);
 
-    // 🔥 ПРОВЕРКА СЕССИИ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+    // Проверка сессии
     function checkSavedSession() {
         const savedUser = localStorage.getItem('verry_user');
         if (savedUser) {
-            currentUser = JSON.parse(savedUser); // Превращаем сохраненную строку обратно в объект
+            currentUser = JSON.parse(savedUser);
             updateUI();
         }
     }
 
-    // Точка входа скрипта
     checkSavedSession();
     loadProducts();
     </script>
