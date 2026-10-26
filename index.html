@@ -4,430 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry Marketplace</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #000000;
-            color: #f3f4f6;
-            padding-bottom: 96px;
-        }
-        header {
-            padding: 24px;
-            border-bottom: 1px solid #111827;
-            background-color: #000000;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        .header-container {
-            max-width: 1152px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-        @media (min-width: 768px) {
-            .header-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-        }
-        h1 {
-            font-size: 28px;
-            font-weight: 900;
-            color: #fbbf24;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        nav {
-            display: flex;
-            gap: 24px;
-            font-size: 14px;
-        }
-        nav a {
-            color: #9ca3af;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        nav a.active {
-            color: #fbbf24;
-            border-bottom: 2px solid #fbbf24;
-            padding-bottom: 2px;
-        }
-        nav a:hover {
-            color: #fbbf24;
-        }
-        main {
-            max-width: 1152px;
-            margin: 0 auto;
-            padding: 32px 16px;
-        }
-        .offline-badge {
-            margin-bottom: 32px;
-            border: 1px dashed rgba(251, 191, 36, 0.3);
-            background-color: #0d0d0d;
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-        }
-        .offline-badge p {
-            color: #fbbf24;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .offline-badge span {
-            display: block;
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 4px;
-        }
-        h2 {
-            font-size: 20px;
-            font-weight: bold;
-            color: #e5e7eb;
-            margin-bottom: 16px;
-        }
-        .controls-block {
-            margin-bottom: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        #search-input {
-            width: 100%;
-            background-color: #0d0d0d;
-            border: 1px solid #111827;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: #e5e7eb;
-            transition: border-color 0.2s;
-        }
-        #search-input::placeholder {
-            color: #4b5563;
-        }
-        #search-input:focus {
-            outline: none;
-            border-color: #fbbf24;
-        }
-        .categories-container {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            scrollbar-width: none;
-        }
-        .categories-container::-webkit-scrollbar {
-            display: none;
-        }
-        .category-btn {
-            background-color: #0d0d0d;
-            border: 1px solid #111827;
-            color: #9ca3af;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 8px;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .category-btn:hover {
-            color: #fbbf24;
-        }
-        .category-btn.active-category {
-            background-color: #fbbf24;
-            border-color: #fbbf24;
-            color: #000000;
-        }
-        .products-grid {
-            display: grid;
-            grid-template-cols: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-        }
-        @media (min-width: 768px) {
-            .products-grid {
-                grid-template-cols: repeat(3, minmax(0, 1fr));
-            }
-        }
-        @media (min-width: 1024px) {
-            .products-grid {
-                grid-template-cols: repeat(4, minmax(0, 1fr));
-            }
-        }
-        @keyframes goldFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .gold-animated-border {
-            padding: 1px;
-            background: linear-gradient(90deg, #fbbf24, #d97706, #fef08a, #fbbf24);
-            background-size: 300% 300%;
-            animation: goldFlow 4s ease infinite;
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card-inner {
-            background-color: #0d0d0d;
-            border-radius: 15px;
-            padding: 12px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .image-placeholder {
-            width: 100%;
-            height: 112px;
-            background-color: #141414;
-            border-radius: 12px;
-            border: 1px solid #111827;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #4b5563;
-        }
-        @media (min-width: 768px) {
-            .image-placeholder {
-                height: 160px;
-            }
-        }
-        .product-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e5e7eb;
-        }
-        .product-footer {
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid #111827;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .product-price {
-            font-size: 16px;
-            font-weight: bold;
-            color: #fbbf24;
-        }
-        .buy-btn {
-            background-color: #fbbf24;
-            color: #000000;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .buy-btn:active {
-            transform: scale(0.95);
-        }
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(7, 7, 7, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid #111827;
-            padding: 12px;
-            z-index: 40;
-        }
-        .nav-links {
-            max-width: 448px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-            color: #6b7280;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .nav-item:hover {
-            color: #fbbf24;
-        }
-        .nav-item.active {
-            color: #fbbf24;
-            font-weight: 500;
-        }
-        #toast {
-            position: fixed;
-            bottom: 96px;
-            left: 50%;
-            transform: translate(-50%, 16px);
-            background-color: #fbbf24;
-            color: #000000;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 12px 24px;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            z-index: 50;
-        }
-        #toast.show {
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
-    </style>
+    <!-- Подключаем Tailwind CSS для красивых стилей -->
+    <script src="https://jsdelivr.net"></script>
 </head>
-<body>
+<body class="bg-black text-[#f3f4f6] font-sans antialiased">
+
     <!-- Шапка сайта -->
-<header class="p-6 md:px-12 border-b border-gray-900 bg-black sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <h1 class="text-3xl font-black text-[#fbbf24] tracking-wider uppercase">Verry</h1>
-        <nav class="flex gap-6 text-sm text-gray-400">
-            <button onclick="showPage('catalog')" id="nav-catalog" class="text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold">Каталог</button>
-            <button onclick="showPage('cabinet')" id="nav-cabinet" class="hover:text-[#fbbf24] transition">Кабинет</button>
-            <button onclick="showPage('cart')" id="nav-cart" class="hover:text-[#fbbf24] transition">Корзина</button>
-        </nav>
-    </div>
-</header>
+    <header class="p-6 md:px-12 border-b border-gray-900 bg-black sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-3xl font-black text-[#fbbf24] tracking-wider uppercase">Verry</h1>
+            <nav class="flex gap-6 text-sm text-gray-400">
+                <button onclick="showPage('catalog')" id="nav-catalog" class="text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold cursor-pointer">Каталог</button>
+                <button onclick="showPage('cabinet')" id="nav-cabinet" class="hover:text-[#fbbf24] transition cursor-pointer">Кабинет</button>
+                <button onclick="showPage('cart')" id="nav-cart" class="hover:text-[#fbbf24] transition cursor-pointer">Корзина</button>
+            </nav>
+        </div>
+    </header>
+
     <!-- Основной блок -->
-<main class="max-w-6xl mx-auto px-3 md:px-6 py-8">
-    
-    <!-- СТРАНИЦА: КАТАЛОГ -->
-    <div id="page-catalog" class="page-section">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-            <!-- Твоя карточка товара 1 -->
-            <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg">
-                <div>
-                    <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
-                        <span>[ Картинка ]</span>
+    <main class="max-w-6xl mx-auto px-3 md:px-6 py-8">
+        
+        <!-- СТРАНИЦА: КАТАЛОГ -->
+        <div id="page-catalog" class="page-section">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+                <!-- Карточка товара 1 -->
+                <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Картинка ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара</h3>
                     </div>
-                    <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара</h3>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
+                        <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
                 </div>
-                <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
-                    <span class="text-base md:text-lg font-bold text-[#fbbf24]">990 ₽</span>
-                    <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg">Купить</button>
+                <!-- Карточка товара 2 -->
+                <div class="border border-[#fbbf24]/40 bg-[#0d0d0d] rounded-2xl p-3 flex flex-col justify-between shadow-lg hover:border-[#fbbf24] transition duration-300">
+                    <div>
+                        <div class="w-full h-28 md:h-40 bg-[#141414] rounded-xl mb-2 flex items-center justify-center text-xs text-gray-600 border border-gray-900 overflow-hidden">
+                            <span>[ Картинка ]</span>
+                        </div>
+                        <h3 class="text-sm md:text-base font-semibold text-gray-200">Название товара 2</h3>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-900 flex justify-between items-center">
+                        <span class="text-base md:text-lg font-bold text-[#fbbf24]">1 490 ₽</span>
+                        <button class="bg-[#fbbf24] text-black text-xs md:text-sm font-bold px-3 py-1.5 rounded-lg active:scale-95 transition cursor-pointer">Купить</button>
+                    </div>
                 </div>
             </div>
-            <!-- Сюда вставь остальные свои карточки товаров, если они есть -->
         </div>
-    </div>
 
-    <!-- СТРАНИЦА: КАБИНЕТ -->
-    <div id="page-cabinet" class="page-section hidden">
-        <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto">
-            <h2 class="text-xl font-bold text-[#fbbf24] mb-4">Личный кабинет</h2>
-            <p class="text-gray-400 text-sm">Добро пожаловать в Verry Marketplace!</p>
+        <!-- СТРАНИЦА: КАБИНЕТ -->
+        <div id="page-cabinet" class="page-section hidden">
+            <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto text-center">
+                <h2 class="text-2xl font-bold text-[#fbbf24] mb-4">Личный кабинет</h2>
+                <p class="text-gray-400 text-sm">Добро пожаловать в Verry Marketplace!</p>
+            </div>
         </div>
-    </div>
 
-    <!-- СТРАНИЦА: КОРЗИНА -->
-    <div id="page-cart" class="page-section hidden">
-        <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto">
-            <h2 class="text-xl font-bold text-[#fbbf24] mb-4">Ваша корзина</h2>
-            <p class="text-gray-400 text-sm">Здесь будут отображаться отложенные товары.</p>
+        <!-- СТРАНИЦА: КОРЗИНА -->
+        <div id="page-cart" class="page-section hidden">
+            <div class="border border-gray-900 bg-[#0d0d0d] rounded-2xl p-6 shadow-lg max-w-md mx-auto text-center">
+                <h2 class="text-2xl font-bold text-[#fbbf24] mb-4">Ваша корзина</h2>
+                <p class="text-gray-400 text-sm">Здесь будут отображаться отложенные товары.</p>
+            </div>
         </div>
-    </div>
 
-</main>
-    <div class="bottom-nav">
-        <div class="nav-links">
-            <a href="#" class="nav-item"><span>🏠</span><span>Главная</span></a>
-            <a href="#" class="nav-item active"><span>📁</span><span>Каталог</span></a>
-            <a href="#" class="nav-item"><span>🛒</span><span>Корзина</span></a>
-            <a href="#" class="nav-item"><span>👤</span><span>Аккаунт</span></a>
-        </div>
-    </div>
-    <div id="toast">Товар добавлен!</div>
+    </main>
+
+    <!-- Скрипт для мгновенного переключения страниц -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('search-input');
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            const toast = document.getElementById('toast');
-            const buyButtons = document.querySelectorAll('.buy-btn');
-
-            function showToast(message) {
-                toast.innerText = message;
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2500);
-            }
-
-            buyButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const card = e.target.closest('.product-card');
-                    const title = card.querySelector('.product-title').innerText;
-                    showToast(`Товар "${title}" добавлен!`);
-                });
-            });
-
-            function filterProducts() {
-                const query = searchInput.value.toLowerCase().trim();
-                const activeCategory = document.querySelector('.category-btn.active-category').dataset.category;
-                const cards = document.querySelectorAll('.product-card');
-                
-                cards.forEach(card => {
-                    const title = card.querySelector('.product-title').innerText.toLowerCase();
-                    const cardCategory = card.dataset.category || 'all';
-                    
-                    const matchesSearch = title.includes(query);
-                    const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
-                    
-                    if (matchesSearch && matchesCategory) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-
-            searchInput.addEventListener('input', filterProducts);
-
-            categoryButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    categoryButtons.forEach(b => b.classList.remove('active-category'));
-                    btn.classList.add('active-category');
-                    filterProducts();
-                });
-            });
+    function showPage(pageId) {
+        // Прячем все страницы
+        document.querySelectorAll('.page-section').forEach(page => {
+            page.classList.add('hidden');
         });
-    </script>
-    <script>
-function showPage(pageId) {
-    // Прячем все страницы
-    document.querySelectorAll('.page-section').forEach(page => {
-        page.classList.add('hidden');
-    });
-    // Показываем нужную
-    document.getElementById('page-' + pageId).classList.remove('hidden');
+        // Показываем нужную страницу
+        document.getElementById('page-' + pageId).classList.remove('hidden');
 
-    // Сбрасываем стили у всех кнопок навигации
-    const navButtons = ['catalog', 'cabinet', 'cart'];
-    navButtons.forEach(id => {
-        const btn = document.getElementById('nav-' + id);
-        btn.className = "hover:text-[#fbbf24] transition";
-    });
+        // Сбрасываем стили у всех кнопок навигации
+        const navButtons = ['catalog', 'cabinet', 'cart'];
+        navButtons.forEach(id => {
+            const btn = document.getElementById('nav-' + id);
+            btn.className = "hover:text-[#fbbf24] transition cursor-pointer";
+        });
 
-    // Подсвечиваем активную кнопку
-    const activeBtn = document.getElementById('nav-' + pageId);
-    activeBtn.className = "text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold";
-}
+        // Подсвечиваем активную кнопку золотым
+        const activeBtn = document.getElementById('nav-' + pageId);
+        activeBtn.className = "text-[#fbbf24] border-b border-[#fbbf24] pb-0.5 font-bold cursor-pointer";
+    }
     </script>
 </body>
 </html>
