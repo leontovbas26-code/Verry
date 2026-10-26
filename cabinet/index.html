@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verry Marketplace — Кабинет</title>
+    <style>
+        :root {
+            --bg-black: #000000;
+            --bg-card: #0d0d0d;
+            --gold: #fbbf24;
+            --gold-alpha: rgba(251, 191, 36, 0.4);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-dark: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-dark);
+            background-color: var(--bg-black);
+        }
+
+        .header-container {
+            max-width: 1152px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover { color: var(--gold); }
+
+        main {
+            max-width: 1152px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 16px;
+            flex-grow: 1;
+        }
+
+        .hidden { display: none !important; }
+
+        .auth-container {
+            max-width: 400px;
+            margin: 80px auto;
+            background-color: var(--bg-card);
+            border: 1px solid var(--gold-alpha);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .auth-container h2 {
+            font-size: 22px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-black);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--gold); }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--gold);
+            color: var(--bg-black);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .market-card {
+            border: 1px solid var(--gold-alpha);
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s ease;
+        }
+
+        .market-card:hover { border-color: var(--gold); }
+
+        .card-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .card-value { font-size: 26px; font-weight: 900; color: var(--gold); margin-top: 8px; }
+        
+        .logout-btn {
+            background: none;
+            border: 1px solid #1f2937;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .logout-btn:hover { border-color: #ef4444; color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">Verry</div>
+            <nav><a href="../index.html">← В каталог</a></nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Форма входа -->
+        <div id="authBlock" class="auth-container">
+            <h2>Вход в Verry</h2>
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" id="username" placeholder="admin или ваш логин">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            <button class="btn" onclick="login()">Войти</button>
+        </div>
+
+        <!-- Личный кабинет пользователя -->
+        <div id="userCabinet" class="hidden">
+            <div class="panel-header">
+                <div>
+                    <h2 id="welcomeText">Личный кабинет</h2>
+                    <p style="font-size: 14px; color: var(--text-muted);">Аккаунт сохранен в LocalStorage</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Выйти</button>
+            </div>
+            <div class="stats-grid">
+                <div class="market-card">
+                    <div class="card-title">Мои покупки</div>
+                    <div class="card-value">0 шт.</div>
+                </div>
+                <div class="market-card">
+                    <div class="card-title">Баланс в корзине</div>
+                    <div class="card-value">0 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель Администратора -->
+        <div id="adminPanel" class="hidden">
+            <div class="panel-header">
+                <div>
+                    <h2>Панель администратора (Verry)</h2>
+                    <p style="font-size: 14px; color: #10b981;">● Режим разработчика активен</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Выйти из панели</button>
+            </div>
+            <div class="stats-grid">
+                <div class="market-card">
+                    <div class="card-title">Пользователи на сайте</div>
+                    <div class="card-value" style="color: #10b981;">Online: 1</div>
+                </div>
+                <div class="market-card">
+                    <div class="card-title">Управление товарами</div>
+                    <div class="card-value" style="font-size: 16px; margin-top: 12px; cursor: pointer;">Изменить цены и каталог</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        window.onload = function() {
+            const currentSession = localStorage.getItem('verry_user');
+            if (currentSession) {
+                showPanel(currentSession);
+            }
+        }
+
+        function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+
+            if (!user) return alert('Введите логин');
+
+            if (user === 'admin') {
+                localStorage.setItem('verry_user', 'admin');
+                showPanel('admin');
+            } else {
+                localStorage.setItem('verry_user', user);
+                showPanel(user);
+            }
+        }
+
+        function showPanel(role) {
+            document.getElementById('authBlock').classList.add('hidden');
+            
+            if (role === 'admin') {
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                document.getElementById('userCabinet').classList.remove('hidden');
+                document.getElementById('welcomeText').innerText = `Кабинет: ${role}`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('verry_user');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
