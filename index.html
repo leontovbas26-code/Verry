@@ -40,21 +40,20 @@
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 16px; } }
 
-        /* Карточка по умолчанию чёрная с постоянной переливающейся рамкой */
+        /* Карточка строго чёрная. Убран aspect-ratio, чтобы описание не резалось */
         .product-card {
-            background-color: #0d0d0d; 
+            background-color: #0d0d0d !important; 
             border-radius: 12px; 
-            padding: 12px;
+            padding: 14px;
             display: flex; 
             flex-direction: column; 
             justify-content: space-between;
             position: relative; 
             border: 2px solid transparent;
             background-clip: padding-box;
-            aspect-ratio: 1 / 1.5;
-            overflow: hidden;
+            min-height: 320px; /* Задаём минимальную высоту прямоугольника */
             z-index: 1;
-            /* Плавный возврат в исходное состояние при уходе курсора */
+            /* Плавная анимация возврата к исходному размеру и цвету */
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease; 
         }
         
@@ -76,37 +75,33 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Плавное увеличение и заливка фоном при наведении */
+        /* Эффект при наведении: ПЛАВНЫЙ приглушённо-золотой фон и зум */
         .product-card:hover {
-            background-color: #1a1508; /* Приглушённый золотисто-тёмный фон */
-            transform: scale(1.06);
+            background-color: #1a1405 !important; /* Насыщенный благородный тёмно-золотой оттенок */
+            transform: scale(1.05);
             z-index: 30;
-            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.2);
-            /* Плавная анимация входа */
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease; 
+            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.3);
         }
         
         .img-placeholder {
-            width: 100%; height: 50%; background-color: #141414; border-radius: 8px;
+            width: 100%; height: 120px; background-color: #141414; border-radius: 8px;
             margin-bottom: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 11px; color: #4b5563; border: 1px solid #111827; transition: height 0.3s ease;
+            font-size: 11px; color: #4b5563; border: 1px solid #111827;
         }
         
-        h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; line-height: 1.3; height: 36px; overflow: hidden; }
+        h3 { font-size: 14px; color: #e5e7eb; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
         
+        /* Описание теперь аккуратно разворачивается и не режется рамкой */
         .product-desc {
             font-size: 11px; color: #9ca3af; margin-top: 6px;
             opacity: 0; max-height: 0; overflow: hidden;
             transition: opacity 0.2s ease, max-height 0.2s ease;
         }
         .product-card:hover .product-desc {
-            opacity: 1; max-height: 55px;
-        }
-        .product-card:hover .img-placeholder {
-            height: 32%;
+            opacity: 1; max-height: 100px; /* Даём больше места тексту */
         }
         
-        .card-bottom { margin-top: auto; padding-top: 6px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
+        .card-bottom { margin-top: 12px; padding-top: 8px; border-top: 1px solid #111827; display: flex; justify-content: space-between; align-items: center; }
         .price { font-size: 16px; font-weight: bold; color: #fbbf24; }
         
         .buy-btn {
