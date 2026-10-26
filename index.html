@@ -5,20 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry Marketplace</title>
     <style>
-        /* Чистые стили без интернета */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #000000; color: #f3f4f6; font-family: sans-serif; }
         
         header {
             padding: 24px;
-            border-b: 1px solid #111827;
+            border-bottom: 1px solid #111827;
             background-color: #000000;
             position: sticky;
             top: 0;
             z-index: 50;
         }
         .header-container {
-            max-w: 1152px;
+            max-width: 1152px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -29,6 +28,10 @@
         @media (min-width: 768px) {
             .header-container { flex-direction: row; }
         }
+        
+        /* Блок логотипа с текстом */
+        .logo-block { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 40px; height: 40px; object-fit: contain; }
         h1 { color: #fbbf24; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; font-size: 28px; }
         
         nav { display: flex; gap: 24px; font-size: 14px; }
@@ -48,22 +51,38 @@
             font-weight: bold;
         }
 
-        main { max-w: 1152px; margin: 0 auto; padding: 32px 12px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        main { max-width: 1152px; margin: 0 auto; padding: 32px 12px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
+        /* Легендарная золотая переливающаяся обводка 3px */
         .product-card {
-            border: 1px solid rgba(251, 191, 36, 0.4);
             background-color: #0d0d0d;
             border-radius: 16px;
             padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: border-color 0.3s;
+            position: relative;
+            border: 3px solid transparent;
+            background-clip: padding-box;
         }
-        .product-card:hover { border-color: #fbbf24; }
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: -3px; bottom: -3px; left: -3px; right: -3px;
+            background: linear-gradient(135deg, #fbbf24, #b45309, #d97706, #fbbf24);
+            background-size: 300% 300%;
+            border-radius: 16px;
+            z-index: -1;
+            animation: goldShimmer 4s ease infinite;
+        }
+        @keyframes goldShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         
         .img-placeholder {
             width: 100%;
@@ -120,7 +139,11 @@
 
     <header>
         <div class="header-container">
-            <h1>Verry</h1>
+            <div class="logo-block">
+                <!-- Твой фирменный золотой логотип -->
+                <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" class="logo-icon" alt="Logo">
+                <h1>Verry</h1>
+            </div>
             <nav>
                 <button onclick="showPage('catalog')" id="nav-catalog" class="active">Каталог</button>
                 <button onclick="showPage('cabinet')" id="nav-cabinet">Кабинет</button>
