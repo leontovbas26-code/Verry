@@ -1,5 +1,5 @@
 // Адрес твоего бэкенда на Render (замени на свой актуальный URL)
-const BACKEND_URL = 'https://onrender.com'; 
+const BACKEND_URL = 'https://verry-server.onrender.com'; 
 
 // Достаем массив товаров из localStorage
 let cart = JSON.parse(localStorage.getItem('verry_cart')) || [];
