@@ -1,0 +1,15 @@
+{
+  "name": "Verry Marketplace",
+  "short_name": "Verry",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "путь_к_файлу/icon-512.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
