@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry — Корзина</title>
+    <meta name="theme-color" content="#000000">
     <style>
         /* Базовые стили */
         body {
@@ -36,9 +37,7 @@
         }
 
         @media (min-width: 768px) {
-            .header-container {
-                flex-direction: row;
-            }
+            .header-container { flex-direction: row; }
         }
 
         /* Стили для логотипа-картинки */
@@ -67,15 +66,15 @@
             transition: color 0.2s;
         }
 
-        nav a:hover {
-            color: #fbbf24;
-        }
+        nav a:hover { color: #fbbf24; }
 
         nav a.active {
             color: #fbbf24;
             border-bottom: 2px solid #fbbf24;
             padding-bottom: 2px;
         }
+
+        .hidden { display: none !important; }
 
         /* Контент страницы */
         main {
@@ -105,9 +104,7 @@
             transition: border-color 0.3s;
         }
 
-        .cart-item:hover {
-            border-color: #fbbf24;
-        }
+        .cart-item:hover { border-color: #fbbf24; }
 
         .item-info {
             display: flex;
@@ -126,6 +123,9 @@
             justify-content: center;
             font-size: 10px;
             color: #4b5563;
+            flex-shrink: 0;
+            text-align: center;
+            overflow: hidden;
         }
 
         .item-title {
@@ -143,8 +143,9 @@
 
         .item-controls {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .delete-btn {
@@ -224,9 +225,7 @@
             transition: transform 0.1s;
         }
 
-        .checkout-btn:active {
-            transform: scale(0.95);
-        }
+        .checkout-btn:active { transform: scale(0.95); }
 
         .checkout-btn:disabled {
             background-color: #1f2937;
@@ -243,19 +242,21 @@
 </head>
 <body>
 
-    <!-- ШАПКА С ЧИСТЫМИ ССЫЛКАМИ НА ПАПКИ -->
+    <!-- ИСПРАВЛЕНО: ссылки /Verry/... давали 404 на Vercel — теперь относительные.
+         Логотип грузится с самого сайта, а не с raw.githubusercontent.com (быстрее и надёжнее).
+         Ссылка на админку скрыта и показывается только пользователям с ролью admin. -->
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="/Verry/">
-                    <img src="https://raw.githubusercontent.com/leontovbas26-code/Verry/refs/heads/main/IMG_2386.png" alt="Verry" class="logo-img">
+                <a href="../">
+                    <img src="../IMG_2386.png" alt="Verry" class="logo-img" height="45">
                 </a>
             </div>
             <nav>
-                <a href="/Verry/">Каталог</a>
-                <a href="/Verry/cabinet">Кабинет</a>
-                <a href="/Verry/admin">Админка 👑</a>
-                <a href="/Verry/cart/" class="active">Корзина</a>
+                <a href="../">Каталог</a>
+                <a href="../cabinet/">Кабинет</a>
+                <a href="../cabinet/" id="nav-admin" class="hidden">Админка 👑</a>
+                <a href="./" class="active">Корзина</a>
             </nav>
         </div>
     </header>
@@ -273,7 +274,7 @@
                     <span>Итого к оплате:</span>
                     <span id="total-price">0 ₽</span>
                 </div>
-                <button class="checkout-btn" id="checkout-button" onclick="handleCheckout()">Купить</button>
+                <button class="checkout-btn" id="checkout-button" onclick="handleCheckout()">Оформить заказ</button>
             </div>
 
             <div class="empty-message" id="empty-message">
@@ -283,6 +284,15 @@
         </div>
     </main>
 
+    <script>
+        // Показываем ссылку на админку только админу (панель живёт в Кабинете)
+        try {
+            const session = JSON.parse(localStorage.getItem('verry_user'));
+            if (session && session.role === 'admin') {
+                document.getElementById('nav-admin').classList.remove('hidden');
+            }
+        } catch (e) { /* нет сессии — ссылка остаётся скрытой */ }
+    </script>
     <script src="cart.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verry Marketplace — Кабинет</title>
+    <meta name="theme-color" content="#000000">
     <style>
         :root {
             --bg-black: #000000;
@@ -50,6 +51,7 @@
             color: var(--gold);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            text-decoration: none;
         }
 
         nav a {
@@ -88,9 +90,7 @@
             font-weight: 900;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 16px; }
 
         .form-group label {
             display: block;
@@ -125,6 +125,27 @@
         }
 
         .btn:active { transform: scale(0.98); }
+        .btn:disabled { background-color: #1f2937; color: #4b5563; cursor: wait; }
+
+        .auth-msg {
+            min-height: 20px;
+            font-size: 13px;
+            color: #ef4444;
+            text-align: center;
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+
+        .toggle-auth {
+            display: block;
+            margin: 10px auto 0;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .toggle-auth:hover { text-decoration: underline; }
 
         .panel-header {
             display: flex;
@@ -158,7 +179,7 @@
 
         .card-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .card-value { font-size: 26px; font-weight: 900; color: var(--gold); margin-top: 8px; }
-        
+
         .logout-btn {
             background: none;
             border: 1px solid #1f2937;
@@ -175,24 +196,26 @@
 
     <header>
         <div class="header-container">
-            <div class="logo">Verry</div>
-            <nav><a href="../index.html">← В каталог</a></nav>
+            <a class="logo" href="../">Verry</a>
+            <nav><a href="../">← В каталог</a></nav>
         </div>
     </header>
 
     <main>
-        <!-- Форма входа -->
+        <!-- Форма входа / регистрации -->
         <div id="authBlock" class="auth-container">
-            <h2>Вход в Verry</h2>
+            <h2 id="authTitle">Вход в Verry</h2>
             <div class="form-group">
-                <label>Логин</label>
-                <input type="text" id="username" placeholder="admin или ваш логин">
+                <label for="username">Логин</label>
+                <input type="text" id="username" placeholder="ваш логин" autocomplete="username">
             </div>
             <div class="form-group">
-                <label>Пароль</label>
-                <input type="password" id="password" placeholder="••••••••">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
             </div>
-            <button class="btn" onclick="login()">Войти</button>
+            <button class="btn" id="authBtn" onclick="login()">Войти</button>
+            <p class="auth-msg" id="authMsg"></p>
+            <button class="toggle-auth" id="toggleAuth" onclick="toggleMode()">Нет аккаунта? Создать</button>
         </div>
 
         <!-- Личный кабинет пользователя -->
@@ -200,18 +223,18 @@
             <div class="panel-header">
                 <div>
                     <h2 id="welcomeText">Личный кабинет</h2>
-                    <p style="font-size: 14px; color: var(--text-muted);">Аккаунт сохранен в LocalStorage</p>
+                    <p style="font-size: 14px; color: var(--text-muted);">Сессия сохранена на этом устройстве</p>
                 </div>
                 <button class="logout-btn" onclick="logout()">Выйти</button>
             </div>
             <div class="stats-grid">
                 <div class="market-card">
-                    <div class="card-title">Мои покупки</div>
-                    <div class="card-value">0 шт.</div>
+                    <div class="card-title">Товаров в корзине</div>
+                    <div class="card-value" id="stat-purchases">0 шт.</div>
                 </div>
                 <div class="market-card">
-                    <div class="card-title">Баланс в корзине</div>
-                    <div class="card-value">0 ₽</div>
+                    <div class="card-title">Баланс аккаунта</div>
+                    <div class="card-value" id="stat-balance">0 ₽</div>
                 </div>
             </div>
         </div>
@@ -228,48 +251,121 @@
             <div class="stats-grid">
                 <div class="market-card">
                     <div class="card-title">Пользователи на сайте</div>
-                    <div class="card-value" style="color: #10b981;">Online: 1</div>
+                    <!-- Было захардкожено "Online: 1". Честный прочерк, пока на сервере
+                         нет эндпоинта /api/online (готовый код — в отчёте). -->
+                    <div class="card-value" id="admin-online-counter" style="color: #10b981;">—</div>
                 </div>
                 <div class="market-card">
                     <div class="card-title">Управление товарами</div>
-                    <div class="card-value" style="font-size: 16px; margin-top: 12px; cursor: pointer;">Изменить цены и каталог</div>
+                    <div class="card-value" style="font-size: 16px; margin-top: 12px;">Пока только через API сервера</div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
+        const API_URL = 'https://verry-server.onrender.com';
+        let isRegisterMode = false;
+
+        // ИСПРАВЛЕНО: раньше логин принимал ЛЮБОЕ имя без пароля,
+        // а слово "admin" давало админку кому угодно.
+        // Теперь вход и регистрация идут через настоящие /api/login и /api/register,
+        // роль и баланс приходят с сервера.
         window.onload = function() {
-            const currentSession = localStorage.getItem('verry_user');
-            if (currentSession) {
-                showPanel(currentSession);
+            const session = readSession();
+            if (session) showPanel(session);
+            // Вход по клавише Enter
+            ['username', 'password'].forEach(id => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter') login();
+                });
+            });
+        }
+
+        // Единый формат сессии: JSON-объект {username, role, balance}.
+        // Раньше кабинет хранил простую строку, а каталог ждал объект — данные ломались.
+        function readSession() {
+            const raw = localStorage.getItem('verry_user');
+            if (!raw) return null;
+            try {
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object' && parsed.username) return parsed;
+                throw new Error('legacy');
+            } catch (e) {
+                // Миграция старого формата (простая строка). Права админа из строки НЕ выдаём.
+                const migrated = { username: raw, role: 'user', balance: 0 };
+                localStorage.setItem('verry_user', JSON.stringify(migrated));
+                return migrated;
             }
         }
 
-        function login() {
+        function toggleMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('authTitle').textContent = isRegisterMode ? 'Регистрация в Verry' : 'Вход в Verry';
+            document.getElementById('authBtn').textContent = isRegisterMode ? 'Создать аккаунт' : 'Войти';
+            document.getElementById('toggleAuth').textContent = isRegisterMode ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Создать';
+            document.getElementById('authMsg').textContent = '';
+        }
+
+        async function login() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value;
+            const msg = document.getElementById('authMsg');
+            const btn = document.getElementById('authBtn');
 
-            if (!user) return alert('Введите логин');
+            if (!user) { msg.textContent = 'Введите логин'; return; }
+            if (!pass) { msg.textContent = 'Введите пароль'; return; }
 
-            if (user === 'admin') {
-                localStorage.setItem('verry_user', 'admin');
-                showPanel('admin');
-            } else {
-                localStorage.setItem('verry_user', user);
-                showPanel(user);
+            btn.disabled = true;
+            btn.textContent = 'Подождите...';
+            msg.textContent = '';
+            try {
+                const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+                const response = await fetch(API_URL + endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass }),
+                    signal: AbortSignal.timeout(60000) // Render может просыпаться до минуты
+                });
+                const data = await response.json();
+                if (data.success) {
+                    const session = {
+                        username: user,
+                        role: (data.user && data.user.role) || 'user',
+                        balance: (data.user && typeof data.user.balance === 'number') ? data.user.balance : 0
+                    };
+                    localStorage.setItem('verry_user', JSON.stringify(session));
+                    showPanel(session);
+                } else {
+                    msg.textContent = data.error || 'Неверный логин или пароль';
+                }
+            } catch (e) {
+                msg.textContent = 'Нет связи с сервером. Если он спал на Render — попробуйте ещё раз через минуту.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = isRegisterMode ? 'Создать аккаунт' : 'Войти';
             }
         }
 
-        function showPanel(role) {
+        function showPanel(session) {
             document.getElementById('authBlock').classList.add('hidden');
-            
-            if (role === 'admin') {
+
+            if (session.role === 'admin') {
                 document.getElementById('adminPanel').classList.remove('hidden');
             } else {
                 document.getElementById('userCabinet').classList.remove('hidden');
-                document.getElementById('welcomeText').innerText = `Кабинет: ${role}`;
+                // textContent вместо innerHTML — защита от XSS через логин
+                document.getElementById('welcomeText').textContent = 'Кабинет: ' + session.username;
             }
+
+            // ИСПРАВЛЕНО: цифры больше не захардкожены — считаем из реальной корзины
+            let count = 0;
+            try {
+                const cart = JSON.parse(localStorage.getItem('verry_cart'));
+                if (Array.isArray(cart)) count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            } catch (e) { /* битый JSON игнорируем */ }
+            document.getElementById('stat-purchases').textContent = count + ' шт.';
+            document.getElementById('stat-balance').textContent = (session.balance ?? 0) + ' ₽';
         }
 
         function logout() {
